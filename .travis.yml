@@ -1,0 +1,17 @@
+sudo: false
+language: ruby
+cache: bundler
+
+rvm:
+  - ruby-head
+
+before_script:
+  - psql -c 'create database "gta-assignment_test";' -U postgres
+
+script:
+  - rake db:schema:load
+  - rake spec
+
+after_failure:
+  - echo $RAILS_ENV
+  - rake --version
