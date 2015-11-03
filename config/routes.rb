@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   
-  devise_for :users
+  devise_for :users, :controllers => { 
+    :omniauth_callbacks => "users/omniauth_callbacks" 
+  }
   root 'pages#index'
 
   # Example of regular route:
