@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+ruby "2.2.3"
 
 gem 'rails', '4.2.0'
 gem 'pg'
@@ -23,6 +24,8 @@ gem 'omniauth-google-oauth2'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+gem 'rails_12factor', group: :production
 
 group :development, :test do
   gem 'rspec-rails'
