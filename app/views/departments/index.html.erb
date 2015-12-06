@@ -1,0 +1,12 @@
+<h1>Departments</h1>
+
+<%= button_to "Sync Departments", synchronize_departments_path, 
+  remote: true, class: "btn btn-default" %>
+
+<ul class="list-group">
+  <% @departments.each do |department| %>
+    <%= link_to department, class: "list-group-item" do %>
+      <%= department.name %>
+    <% end %>
+  <% end %>
+</ul>

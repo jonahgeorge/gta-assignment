@@ -22,6 +22,9 @@
 
         <ul class="nav navbar-nav">
           <% if user_signed_in? %>
+            <li><%= link_to "Departments", departments_path %></li>
+            <li><%= link_to "Courses", courses_path %></li>
+            <li><%= link_to "Sections", sections_path %></li>
           <% end %>
         </ul>
 

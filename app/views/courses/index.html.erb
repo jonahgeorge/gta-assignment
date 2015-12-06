@@ -1,0 +1,12 @@
+<h1>Courses</h1>
+
+<%= button_to "Sync Courses", synchronize_courses_path, 
+  remote: true, class: "btn btn-default" %>
+
+<ul class="list-group">
+  <% @courses.each do |course| %>
+    <%= link_to course, class: "list-group-item" do %>
+      <%= course.name %>
+    <% end %>
+  <% end %>
+</ul>
