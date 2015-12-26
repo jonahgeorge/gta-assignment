@@ -1,0 +1,13 @@
+<div class="col-sm-8 col-sm-offset-2">
+  <h2>Skills</h2>
+  
+  <% unless @skills.empty? %>
+    <div id="skills" class="list-group">
+      <%= render @skills %>
+    </div>
+  <% else %>
+    <p>No skills found.</p>
+  <% end %>
+  
+  <%= link_to "Add a skill", new_skill_path, class: "btn btn-default" %>
+</div>

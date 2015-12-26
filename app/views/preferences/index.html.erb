@@ -1,0 +1,13 @@
+<div class="col-sm-8 col-sm-offset-2">
+<h2>Preferences</h2>
+
+<% unless @preferences.empty? %>
+  <div id="preferences" class="list-group">
+    <%= render @preferences %>
+  </div>
+<% else %>
+  <p>No preferences found.</p>
+<% end %>
+
+<%= link_to "Add a preference", new_preference_path, class: "btn btn-default" %>
+</div>

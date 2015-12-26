@@ -1,0 +1,11 @@
+<%= form_tag "/skills", method: :post  do |f| %>
+  <div class="form-group">
+    <%= label_tag :skill %>
+    <%= select_tag :skill_ids, 
+      options_from_collection_for_select(Skill.all, :id, :name) %>
+  </div>
+
+  <div class="actions">
+    <%= submit_tag %>
+  </div>
+<% end %>

@@ -1,23 +1,25 @@
 Rails.application.routes.draw do
-  
-  devise_for :users, :controllers => { 
-    :omniauth_callbacks => "users/omniauth_callbacks" 
-  }
   root 'pages#index'
 
-  resources :departments do
-    collection do
-      post :synchronize
-    end
+  get 'settings'             => redirect('/settings/profile')
+  get 'settings/profile'     => 'settings#profile'
+  get 'settings/preferences' => 'settings#preferences'
+  get 'settings/skills'      => 'settings#skills'
+  resources :users
+  resources :skills
+  resources :preferences
+
+  devise_for :users, :controllers => {
+    :omniauth_callbacks => "users/omniauth_callbacks"
+  }
+
+  namespace :admin do
+    post 'synchronize'   => 'application#synchronize'
+    get  'settings'      => 'pages#settings'
+    get  'preferences'   => 'reports#preferences'
+    resources :departments
+    resources :courses, except: [:index]
+    resources :sections, except: [:index]
   end
-  resources :courses do 
-    collection do
-      post :synchronize
-    end
-  end
-  resources :sections do
-    collection do
-      post :synchronize
-    end
-  end
+  match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
 end

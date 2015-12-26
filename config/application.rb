@@ -33,5 +33,6 @@ module GtaAssignment
 
     # Background jobs
     config.active_job.queue_adapter = :delayed_job
+    # config.active_job.queue_adapter = :sidekiq
   end
 end

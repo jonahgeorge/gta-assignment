@@ -1,0 +1,7 @@
+<% cache course do %>
+  <tr>
+    <td><%= link_to course.course_number, admin_course_path(course) %></td>
+    <td><%= link_to course.name.titlecase, admin_course_path(course) %></td>
+  </tr>
+<% end %>
+

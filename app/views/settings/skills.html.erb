@@ -1,0 +1,33 @@
+<div class="panel panel-default">
+<div class="panel-heading">Skills</div>
+
+<div class="panel-body">
+  Your skillset determines your eligibility to TA certain classes.
+</div>
+
+<div id="skills" class="list-group">
+  <% if @skills.empty? %>
+    <li class="list-group-item">No skills found.</li>
+  <% else %>
+    <%= render @skills %>
+  <% end %>
+</div>
+
+<div class="panel-body">
+  <%= link_to "Add a skill", new_skill_path, class: "btn btn-default" %>
+</div>
+</div>
+
+<div id="new-skill-form" class="panel panel-default">
+  <div class="panel-heading">Add a skill</div>
+  <div class="panel-body">
+    <%= render "skills/form" %>
+  </div>
+</div>
+
+<script type="text/javascript">
+$("#add-skill").on("click", function (event) {
+  event.preventDefault()
+    $("#add-skill-form").toggleClass("hidden")
+})
+</script>

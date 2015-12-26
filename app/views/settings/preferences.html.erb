@@ -1,0 +1,35 @@
+<div class="panel panel-default">
+<div class="panel-heading">Preferences</div>
+
+<div class="panel-body">
+  These preferences influence your assignment.
+</div>
+
+<div id="preferences" class="list-group">
+  <% if @preferences.empty? %>
+    <li class="list-group-item">No preferences found.</li>
+  <% else %>
+    <%= render @preferences %>
+  <% end %>
+</div>
+
+<div class="panel-body">
+  <%= link_to "Add a preference", nil, class: "btn btn-default", id: "add-preference" %>
+</div>
+</div>
+
+<div id="add-preference-form" class="hidden panel panel-default">
+  <div class="panel-heading">Add a preference</div>
+  <div class="panel-body">
+    <% @preference = current_user.preferences.new %>
+    <% @departments = Department.all %>
+    <%= render "preferences/form" %>
+  </div>
+</div>
+
+<script type="text/javascript">
+$("#add-preference").on("click", function (event) {
+  event.preventDefault()
+    $("#add-preference-form").toggleClass("hidden")
+})
+</script>

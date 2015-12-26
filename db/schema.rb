@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151206020358) do
+ActiveRecord::Schema.define(version: 20151223220650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,9 +22,15 @@ ActiveRecord::Schema.define(version: 20151206020358) do
     t.integer  "department_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.integer  "course_number"
   end
 
   add_index "courses", ["department_id"], name: "index_courses_on_department_id", using: :btree
+
+  create_table "courses_skills", id: false, force: :cascade do |t|
+    t.integer "course_id", null: false
+    t.integer "skill_id",  null: false
+  end
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -44,6 +50,15 @@ ActiveRecord::Schema.define(version: 20151206020358) do
 
   create_table "departments", force: :cascade do |t|
     t.string   "name"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "subject_code"
+  end
+
+  create_table "preferences", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "course_id"
+    t.integer  "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -51,29 +66,43 @@ ActiveRecord::Schema.define(version: 20151206020358) do
   create_table "sections", force: :cascade do |t|
     t.string   "number"
     t.string   "location"
-    t.integer  "capacity"
-    t.integer  "availability"
+    t.integer  "max_enrollment"
+    t.integer  "current_enrollment"
     t.integer  "course_id"
     t.string   "instructor"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "term"
   end
 
   add_index "sections", ["course_id"], name: "index_sections_on_course_id", using: :btree
 
+  create_table "skills", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "skills_users", id: false, force: :cascade do |t|
+    t.integer "user_id",  null: false
+    t.integer "skill_id", null: false
+  end
+
   create_table "users", force: :cascade do |t|
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.string   "email",                  default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
+    t.boolean  "is_admin",               default: false
+    t.string   "name"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
