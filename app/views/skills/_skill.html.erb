@@ -3,7 +3,7 @@
   <div class="list-group-item">
     <%= skill.name %>
 
-    <%= button_to "Remove", skill, remote: true, method: :delete, 
+    <%= button_to "Remove", skill, method: :delete, 
       class: "btn btn-danger btn-xs pull-right", 
       data: { confirm: "Are you sure?" } %>
   </div>

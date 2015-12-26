@@ -23,7 +23,7 @@ class SkillsController < ApplicationController
   end
 
   def destroy
-    @skill.destroy
+    current_user.skills.delete(@skill)
     redirect_to skills_path, notice: 'Skill was successfully destroyed.'
   end
 

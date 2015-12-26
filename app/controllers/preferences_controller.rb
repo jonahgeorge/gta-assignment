@@ -14,7 +14,7 @@ class PreferencesController < ApplicationController
     @preference = current_user.preferences.new(preference_params)
 
     if @preference.save
-      redirect_to settings_preferences_path, notice: 'Preference was successfully created.'
+      redirect_to preferences_path, notice: 'Preference was successfully created.'
     else
       render :new
     end
@@ -25,7 +25,7 @@ class PreferencesController < ApplicationController
 
   def update
     if @preference.update(preference_params)
-      redirect_to settings_preferences_path, notice: 'Preference was successfully updated.'
+      redirect_to preferences_path, notice: 'Preference was successfully updated.'
     else
       render :edit
     end
@@ -34,7 +34,7 @@ class PreferencesController < ApplicationController
   def destroy
     @preference.destroy
     respond_to do |format|
-      format.html { redirect_to settings_preferences_path, notice: 'Preference was successfully destroyed.' }
+      format.html { redirect_to preferences_path, notice: 'Preference was successfully destroyed.' }
       format.json { head :no_content }
       format.js
     end

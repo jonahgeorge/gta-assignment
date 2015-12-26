@@ -1,10 +1,6 @@
 Rails.application.routes.draw do
   root 'pages#index'
 
-  get 'settings'             => redirect('/settings/profile')
-  get 'settings/profile'     => 'settings#profile'
-  get 'settings/preferences' => 'settings#preferences'
-  get 'settings/skills'      => 'settings#skills'
   resources :users
   resources :skills
   resources :preferences
