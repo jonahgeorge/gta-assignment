@@ -1,9 +1,6 @@
-<div class="panel panel-default">
-<div class="panel-heading">Skills</div>
+<h2>Skills</h2>
 
-<div class="panel-body">
-  Your skillset determines your eligibility to TA certain classes.
-</div>
+<p>Your skillset determines your eligibility to TA certain classes.</p>
 
 <div id="skills" class="list-group">
   <% if @skills.empty? %>
@@ -13,16 +10,13 @@
   <% end %>
 </div>
 
-<div class="panel-body">
-  <%= link_to "Add a skill", new_skill_path, class: "btn btn-default", id: "add-skill" %>
-</div>
-</div>
+<%= link_to "Add a skill", new_skill_path, class: "btn btn-default", id: "add-skill" %>
 
-<div id="add-skill-form" class="hidden panel panel-default">
-  <div class="panel-heading">Add a skill</div>
-  <div class="panel-body">
-    <%= render "skills/form" %>
-  </div>
+<br>
+<br>
+
+<div id="add-skill-form" class="hidden alert alert-warning">
+  <%= render "skills/form" %>
 </div>
 
 <script type="text/javascript">
