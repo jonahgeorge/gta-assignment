@@ -1,0 +1,40 @@
+<nav class="navbar navbar-default">
+<div class="container">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <%= link_to "GtaAssignment", root_path, class: "navbar-brand" %>
+  </div>
+
+  <ul class="nav navbar-nav">
+    <% if user_signed_in? %>
+      <% if current_user.role == "administrator" %>
+        <li><%= link_to "Users", administrator_users_path %></li>
+        <li><%= link_to "Departments", administrator_departments_path %></li>
+        <li><%= link_to "Settings", administrator_settings_path %></li>
+      <% elsif current_user.role == "instructor" %>
+        <!-- <li><%#= link_to "Profile", profile_path %></li> -->
+        <li><%= link_to "Courses", preferences_path %></li>
+      <% else %>
+        <!-- <li><%#= link_to "Profile", student_profile_path %></li> -->
+        <li><%= link_to "Preferences", student_preferences_path %></li>
+        <li><%= link_to "Skills", student_skills_users_path %></li>
+      <% end %>
+    <% end %>
+  </ul>
+
+  <div class="collapse navbar-collapse" id="navbar-collapse">
+    <ul class="nav navbar-nav navbar-right">
+      <% if user_signed_in? %>
+        <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
+      <% else %>
+        <li><%= link_to "Sign In", user_omniauth_authorize_path(:google_oauth2) %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+</nav>

@@ -1,0 +1,15 @@
+<h2>Instructor Preferences</h2>
+
+<% @users.each do |user| %>
+  <span><%= user.name %></span>
+  <span style="float:right"><%= user.email %></span>
+  <table border="1" width="100%">
+    <% user.preferences.each do |p| %>
+      <tr>
+        <td><%= p.course.department.subject_code %><%= p.course.course_number %></td>
+        <td><%= p.value %></td>
+      </tr>
+    <% end %>
+  </table>
+  <br>
+<% end %>
