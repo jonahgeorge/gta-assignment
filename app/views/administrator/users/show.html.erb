@@ -1,0 +1,29 @@
+<p>
+  <label>Name</label>
+  <span><%= @user.name %></span>
+</p>
+
+<p>
+  <label>Email</label>
+  <span><%= @user.email %></span>
+</p>
+
+<p>
+  <label>Role</label>
+  <span><%= @user.role %></span>
+</p>
+
+<h4>Skills</h4>
+<ul class="list-group">
+  <% @user.skills.each do |skill| %>
+    <li class="list-group-item"><%= skill.name %></li>
+  <% end %>
+</ul>
+
+<h4>Course Preferences</h4>
+<ul class="list-group">
+  <%= render @user.preferences %>
+</ul>
+
+<%= link_to 'Edit', edit_administrator_user_path(@user) %> |
+<%= link_to 'Back', administrator_users_path %>

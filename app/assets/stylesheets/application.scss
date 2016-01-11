@@ -2,22 +2,5 @@
 @import "bootstrap";
 
 .button_to {
-  display: inline-block;
   float: right;
 }
-
-// ul[data-behavior~=expandable] {
-//   list-style: none;
-//   margin-left: 0;
-//   padding-left: 0;
-// }
-
-// [data-behavior~=expandable].expanded > .collapsed_content,
-// [data-behavior~=expandable] > .expanded_content  {
-//   display: none;
-// }
-
-// [data-behavior~=expandable].expanded > .expanded_content,
-// [data-behavior~=expandable] > .collapsed_content {
-//   display: block;
-// }

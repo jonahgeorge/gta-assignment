@@ -1,0 +1,7 @@
+<%= link_to administrator_user_path(user), class: "table-row" do %>
+  <div class="table-cell"><%= user.name %></div>
+  <div class="table-cell"><%= user.email %></div>
+  <div class="table-cell"><%= user.role %></div>
+  <div class="table-cell"><%= link_to 'Edit', edit_administrator_user_path(user) %></div>
+  <div class="table-cell"><%= link_to 'Destroy', administrator_user_path(user), method: :delete, data: { confirm: 'Are you sure?' } %></div>
+<% end %>
