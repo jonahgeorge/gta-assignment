@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     resources :sections, except: [:index]
     resources :users
     get 'settings' => 'pages#settings'
-    get 'synchronize' => 'application#synchronize'
+    get 'synchronize' => 'administrator/application#synchronize'
     get 'student_preferences' => 'reports#student_preferences'
     get 'instructor_preferences' => 'reports#instructor_preferences'
   end
