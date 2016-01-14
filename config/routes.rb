@@ -21,10 +21,10 @@ Rails.application.routes.draw do
     resources :courses, except: [:index]
     resources :sections, except: [:index]
     resources :users
-    get  'settings' => 'pages#settings'
-    post 'synchronize' => 'application#synchronize'
-    get  'student_preferences' => 'reports#student_preferences'
-    get  'instructor_preferences' => 'reports#instructor_preferences'
+    get 'settings' => 'pages#settings'
+    get 'synchronize' => 'application#synchronize'
+    get 'student_preferences' => 'reports#student_preferences'
+    get 'instructor_preferences' => 'reports#instructor_preferences'
   end
 
   match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
