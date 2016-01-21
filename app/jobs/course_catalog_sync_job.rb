@@ -21,7 +21,8 @@ class CourseCatalogSyncJob < ActiveJob::Base
   private
 
   def results
-    OsuCcScraper::Department.all
+    whitelist = [ "CS", "ECE", "EE" ]
+    OsuCcScraper::Department.all.select { |d| whitelist.include? d.subject_code }
   end
 
   def find_department
