@@ -1,19 +1,22 @@
+require "csv"
+
 module Administrator
   class ReportsController < BaseController
 
     def student_preferences
-      @users = User.where(role: 0)
+      @students = User.where(role: "student")
+      @department = Department.find_by_subject_code("CS")
 
       respond_to do |format|
-        format.pdf { render pdf: "student_preferences" }
+        format.xlsx
       end
     end
 
     def instructor_preferences
-      @users = User.where(role: 1)
+      @users = User.where(role: "instructor")
 
       respond_to do |format|
-        format.pdf { render pdf: "instructor_preferences" }
+        format.xlsx
       end
     end
 
