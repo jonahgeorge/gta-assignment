@@ -3,11 +3,9 @@ source 'https://rubygems.org'
 gem 'rails', '4.2.0'
 gem 'pg'
 gem 'sdoc', '~> 0.4.0', group: :doc
-gem "osu-cc-scraper"
 
-# PDF Rendering
-gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
+gem "osu-cc-scraper"
+gem 'axlsx_rails'
 
 # Background Jobs
 gem 'delayed_job'
