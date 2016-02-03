@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     get 'synchronize'            => 'base#synchronize'
     get 'student_preferences'    => 'reports#student_preferences'
     get 'instructor_preferences' => 'reports#instructor_preferences'
+    get 'assigment'              => 'assigments#index'
   end
 
   match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]

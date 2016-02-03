@@ -9,9 +9,9 @@ before_script:
   - psql -c 'create database "gta-assignment_test";' -U postgres
 
 script:
-  - rake db:schema:load
-  - rake spec
+  - bundle exec rake db:schema:load
+  - bundle exec rake spec
 
 after_failure:
   - echo $RAILS_ENV
-  - rake --version
+  - bundle exec rake --version
