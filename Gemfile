@@ -1,12 +1,13 @@
 source 'https://rubygems.org'
 
-ruby "2.3.0"
+ruby '2.3.0'
 
 gem 'rails', '4.2.0'
 gem 'pg'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-gem "osu-cc-scraper"
+gem 'rulp', require: false
+gem 'osu-cc-scraper'
 gem 'axlsx_rails'
 
 # Background Jobs
@@ -30,7 +31,6 @@ gem 'devise'
 gem 'omniauth-google-oauth2'
 
 gem 'rails_12factor', group: :production
-
 gem 'quiet_assets', group: :development
 
 group :development, :test do
@@ -38,4 +38,5 @@ group :development, :test do
   gem 'byebug'
   gem 'web-console', '~> 2.0'
   gem 'spring'
+  gem 'pry'
 end

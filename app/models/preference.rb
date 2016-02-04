@@ -1,6 +1,4 @@
 class Preference < ActiveRecord::Base
-  enum value: { favor: 0, disfavor: 1 }
-
   validates :user_id, presence: true
   validates :course_id, presence: true
   validates :value, presence: true

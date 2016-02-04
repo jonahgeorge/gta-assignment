@@ -18,50 +18,51 @@ Department.create name: "Computer Science", subject_code: "CS"
 course = Course.create department: Department.find_by_subject_code("CS"), name: "Python", course_number: 100
 course.skills << Skill.find_by_name("Python")
 course.skills << Skill.find_by_name("Debugging")
+course.sections << Section.create!(number: "400", current_enrollment: 35, term: "Winter")
 
 course = Course.create department: Department.find_by_subject_code("CS"), name: "Java", course_number: 101
 course.skills << Skill.find_by_name("Debugging")
 course.skills << Skill.find_by_name("Java")
+course.sections << Section.create!(number: "100", current_enrollment: 35, term: "Winter")
 
 course = Course.create department: Department.find_by_subject_code("CS"), name: "Databases", course_number: 102
 course.skills << Skill.find_by_name("SQL")
-
-# Sections
+course.sections << Section.create!(number: "100", current_enrollment: 35, term: "Winter")
 
 # Students
-user = User.create email: "skelton@oregonstate.edu", name: "John Skelton", role: "student"
-user.preferences.create course: Course.find_by_name("Python"), value: "favor"
-user.preferences.create course: Course.find_by_name("Java"), value: "disfavor"
-user.preferences.create course: Course.find_by_name("Databases"), value: "disfavor"
+user = User.create email: "skelton@oregonstate.edu", name: "John Skelton", role: "student", fte: 0.25
+user.preferences.create course: Course.find_by_name("Python"), value: 1
+user.preferences.create course: Course.find_by_name("Java"), value: 1
+user.preferences.create course: Course.find_by_name("Databases"), value: 3
 user.skills << Skill.find_by_name("Ruby")
 user.skills << Skill.find_by_name("Perl")
 
-user = User.create email: "george@oregonstate.edu", name: "John George", role: "student"
-user.preferences.create course: Course.find_by_name("Python"), value: "disfavor"
-user.preferences.create course: Course.find_by_name("Java"), value: "disfavor"
-user.preferences.create course: Course.find_by_name("Databases"), value: "favor"
+user = User.create email: "george@oregonstate.edu", name: "John George", role: "student", fte: 0.25
+user.preferences.create course: Course.find_by_name("Python"), value: -1
+user.preferences.create course: Course.find_by_name("Java"), value: -1
+user.preferences.create course: Course.find_by_name("Databases"), value: 2
 user.skills << Skill.find_by_name("C")
 user.skills << Skill.find_by_name("Python")
 user.skills << Skill.find_by_name("Ruby")
 
-user = User.create email: "gifford@oregonstate.edu", name: "Jane Gifford", role: "student"
-user.preferences.create course: Course.find_by_name("Python"), value: "disfavor"
-user.preferences.create course: Course.find_by_name("Java"), value: "favor"
-user.preferences.create course: Course.find_by_name("Databases"), value: "favor"
+user = User.create email: "gifford@oregonstate.edu", name: "Jane Gifford", role: "student", fte: 0.5
+user.preferences.create course: Course.find_by_name("Python"), value: -1
+user.preferences.create course: Course.find_by_name("Java"), value: 3
+user.preferences.create course: Course.find_by_name("Databases"), value: 3
 user.skills << Skill.find_by_name("Ruby")
 user.skills << Skill.find_by_name("Python")
 
-user = User.create email: "tate@oregonstate.edu", name: "John Tate", role: "student"
-user.preferences.create course: Course.find_by_name("Python"), value: "disfavor"
-user.preferences.create course: Course.find_by_name("Java"), value: "disfavor"
-user.preferences.create course: Course.find_by_name("Databases"), value: "favor"
+user = User.create email: "tate@oregonstate.edu", name: "John Tate", role: "student", fte: 0.25
+user.preferences.create course: Course.find_by_name("Python"), value: -1
+user.preferences.create course: Course.find_by_name("Java"), value: -1
+user.preferences.create course: Course.find_by_name("Databases"), value: 3
 user.skills << Skill.find_by_name("Python")
 user.skills << Skill.find_by_name("C++")
 
-user = User.create email: "talkington@oregonstate.edu", name: "Jane Talkington", role: "student"
-user.preferences.create course: Course.find_by_name("Python"), value: "disfavor"
-user.preferences.create course: Course.find_by_name("Java"), value: "disfavor"
-user.preferences.create course: Course.find_by_name("Databases"), value: "favor"
+user = User.create email: "talkington@oregonstate.edu", name: "Jane Talkington", role: "student", fte: 0.0
+user.preferences.create course: Course.find_by_name("Python"), value: -1
+user.preferences.create course: Course.find_by_name("Java"), value: -1
+user.preferences.create course: Course.find_by_name("Databases"), value: 3
 user.skills << Skill.find_by_name("Haskell")
 user.skills << Skill.find_by_name("Debugging")
 
