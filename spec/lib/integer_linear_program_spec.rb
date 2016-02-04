@@ -46,7 +46,7 @@ RSpec.describe IntegerLinearProgram do
     
     problem = IntegerLinearProgram.new(@students, @sections, FTE_PER_SECTION, STUDENTS_PER_TA)
     problem.solve
-    puts problem.results
+    problem.print_results
   end
 
 end
