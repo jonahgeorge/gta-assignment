@@ -16,7 +16,7 @@
         <li><%= link_to "Users", administrator_users_path %></li>
         <li><%= link_to "Departments", administrator_departments_path %></li>
         <li><%= link_to "Settings", administrator_settings_path %></li>
-        <li><%= link_to "Assigment" administrator_assigment_path%> </li>
+        <li><%= link_to "Assignment"%> </li>
       <% elsif current_user.role == "instructor" %>
         <!-- <li><%#= link_to "Profile", profile_path %></li> -->
         <li><%= link_to "Courses", preferences_path %></li>
