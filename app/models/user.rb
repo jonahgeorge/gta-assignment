@@ -20,6 +20,18 @@ class User < ActiveRecord::Base
     user
   end
 
+  def self.students
+    where(role: "student")
+  end
+
+  def self.instructors
+    where(role: "instructor")
+  end
+
+  def self.administrators
+    where(role: "administrator")
+  end
+
   private
 
     def set_password

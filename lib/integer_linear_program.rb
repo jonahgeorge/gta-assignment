@@ -5,7 +5,7 @@ Rulp::print_solver_outputs = false
 
 class IntegerLinearProgram 
 
-  def initialize(students, sections, fte_per_section, students_per_ta)
+  def initialize(students, sections, fte_per_section = 0.25, students_per_ta = 30)
     @students = students
     @sections = sections
     @fte_per_section = fte_per_section
