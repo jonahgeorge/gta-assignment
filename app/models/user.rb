@@ -1,35 +1,23 @@
 class User < ActiveRecord::Base
-  before_validation :set_password, on: :create
 
-  enum role: { student: 0, instructor: 1, administrator: 2 }
+  self.inheritance_column = :role
+  def self.roles
+    %w(Student Instructor Administrator)
+  end
+
+  before_validation :set_password, on: :create
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:google_oauth2]
 
-  has_many :preferences
-  has_many :skills_users
-  has_many :skills, through: :skills_users
-
   def self.from_omniauth(access_token)
     data = access_token.info
-    user = User.where(:email => data["email"]).first
+    user = User.where(email: data["email"]).first
     unless user
-      user = User.create name: data["name"], email: data["email"]
+      user = User.create(name: data["name"], email: data["email"])
     end
     user
-  end
-
-  def self.students
-    where(role: "student")
-  end
-
-  def self.instructors
-    where(role: "instructor")
-  end
-
-  def self.administrators
-    where(role: "administrator")
   end
 
   private

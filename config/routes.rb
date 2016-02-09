@@ -3,20 +3,18 @@ Rails.application.routes.draw do
   root 'pages#index'
   get 'about' => 'pages#about'
 
-  devise_for :users, :controllers => {
-    :omniauth_callbacks => "users/omniauth_callbacks"
-  }
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
-  namespace :student do
-    resources :skills_users
+  namespace :students do
+    resources :skills
     resources :preferences
     resources :users
   end
 
-  namespace :instructor do
+  namespace :instructors do
   end
 
-  namespace :administrator do
+  namespace :administrators do
     resources :departments
     resources :courses, except: [:index]
     resources :sections, except: [:index]

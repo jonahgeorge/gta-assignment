@@ -1,8 +1,0 @@
-<tr>
-  <td><%= link_to user.id, administrator_user_path(user) %></td>
-  <td><%= user.name %></td>
-  <td><%= user.email %></td>
-  <td><%= user.role %></td>
-  <td><%= link_to 'Edit', edit_administrator_user_path(user) %></td>
-  <td><%= link_to 'Destroy', administrator_user_path(user), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-</tr>

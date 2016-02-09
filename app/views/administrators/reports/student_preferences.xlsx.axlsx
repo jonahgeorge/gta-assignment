@@ -1,0 +1,7 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Sheet1") do |sheet|
+  sheet.add_row [""] + @department.courses.map{|c| "#{c.department.subject_code} #{c.course_number}" }
+  @students.each do |s|
+    sheet.add_row [ s.name ] + @department.courses.map{|c| ::Students::Preference.where(course_id: c.id, student_id: s.id).first.try!(:value) }
+  end
+end

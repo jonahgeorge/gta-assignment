@@ -12,17 +12,14 @@
 
   <ul class="nav navbar-nav">
     <% if user_signed_in? %>
-      <% if current_user.role == "administrator" %>
-        <li><%= link_to "Users", administrator_users_path %></li>
-        <li><%= link_to "Departments", administrator_departments_path %></li>
-        <li><%= link_to "Settings", administrator_settings_path %></li>
-      <% elsif current_user.role == "instructor" %>
-        <!-- <li><%#= link_to "Profile", profile_path %></li> -->
-        <li><%= link_to "Courses", preferences_path %></li>
-      <% else %>
-        <!-- <li><%#= link_to "Profile", student_profile_path %></li> -->
-        <li><%= link_to "Preferences", student_preferences_path %></li>
-        <li><%= link_to "Skills", student_skills_users_path %></li>
+      <% if current_user.role == "Administrator" %>
+        <li><%= link_to "Users",       administrators_users_path %></li>
+        <li><%= link_to "Departments", administrators_departments_path %></li>
+        <li><%= link_to "Settings",    administrators_settings_path %></li>
+      <% elsif current_user.role == "Instructor" %>
+      <% elsif current_user.role == "Student" %>
+        <li><%= link_to "Preferences", students_preferences_path %></li>
+        <li><%= link_to "Skills",      students_skills_path %></li>
       <% end %>
     <% end %>
   </ul>

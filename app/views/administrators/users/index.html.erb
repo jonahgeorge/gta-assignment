@@ -1,0 +1,33 @@
+<h2>Users</h2>
+
+<%= link_to "New User", new_administrators_user_path, class: "btn btn-default" %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.id, administrators_user_path(user) %></td>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.role %></td>
+        <td><%= link_to 'Edit', edit_administrators_user_path(user) %></td>
+        <td><%= link_to 'Destroy', administrators_user_path(user), 
+                method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>    
+    <% end %>
+
+    <%#= render @users %>
+  </tbody>
+</table>
