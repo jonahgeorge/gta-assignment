@@ -13,13 +13,13 @@
   <ul class="nav navbar-nav">
     <% if user_signed_in? %>
       <% if current_user.role == "Administrator" %>
-        <li><%= link_to "Users",       administrators_users_path %></li>
-        <li><%= link_to "Departments", administrators_departments_path %></li>
-        <li><%= link_to "Settings",    administrators_settings_path %></li>
+        <li><%= link_to "Assignment", administrators_assignment_path %> </li>
+        <li><%= link_to "Users", administrators_users_path %></li>
+        <li><%= link_to "Settings", administrators_settings_path %></li>
       <% elsif current_user.role == "Instructor" %>
       <% elsif current_user.role == "Student" %>
         <li><%= link_to "Preferences", students_preferences_path %></li>
-        <li><%= link_to "Skills",      students_skills_path %></li>
+        <li><%= link_to "Skills", students_skills_path %></li>
       <% end %>
     <% end %>
   </ul>
