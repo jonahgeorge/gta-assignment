@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160209182956) do
+ActiveRecord::Schema.define(version: 20160212221839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,8 +28,10 @@ ActiveRecord::Schema.define(version: 20160209182956) do
   add_index "courses", ["department_id"], name: "index_courses_on_department_id", using: :btree
 
   create_table "courses_skills", force: :cascade do |t|
-    t.integer "course_id", null: false
-    t.integer "skill_id",  null: false
+    t.integer "course_id",     null: false
+    t.integer "skill_id",      null: false
+    t.integer "instructor_id"
+    t.integer "value"
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -55,6 +57,15 @@ ActiveRecord::Schema.define(version: 20160209182956) do
     t.string   "subject_code"
   end
 
+  create_table "instructor_preferences", force: :cascade do |t|
+    t.integer  "section_id"
+    t.integer  "instructor_id"
+    t.integer  "student_id"
+    t.integer  "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "sections", force: :cascade do |t|
     t.integer  "max_enrollment"
     t.integer  "current_enrollment"
@@ -62,6 +73,7 @@ ActiveRecord::Schema.define(version: 20160209182956) do
     t.string   "instructor"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.string   "term"
     t.integer  "location"
   end
 
@@ -87,33 +99,21 @@ ActiveRecord::Schema.define(version: 20160209182956) do
     t.integer "value"
   end
 
-  create_table "terms", force: :cascade do |t|
-    t.integer  "season"
-    t.integer  "year"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "terms_sections", id: false, force: :cascade do |t|
-    t.integer "term_id"
-    t.integer "section_id"
-  end
-
   create_table "users", force: :cascade do |t|
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
-    t.string   "email",                  default: "",  null: false
-    t.string   "encrypted_password",     default: "",  null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.string   "email",                  default: "",        null: false
+    t.string   "encrypted_password",     default: "",        null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,   null: false
+    t.integer  "sign_in_count",          default: 0,         null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
     t.string   "name"
-    t.string   "role",                   default: "0"
+    t.string   "role",                   default: "Student"
     t.float    "fte",                    default: 0.0
   end
 

@@ -15,15 +15,17 @@
 
 <h4>Skills</h4>
 <ul class="list-group">
-  <% @user.skills.each do |skill| %>
-    <li class="list-group-item"><%= skill.name %></li>
-  <% end %>
+  <%# @user.skills.each do |skill| %>
+    <li class="list-group-item"><%#= skill.name %></li>
+  <%# end %>
 </ul>
 
 <h4>Course Preferences</h4>
 <ul class="list-group">
-  <%= render @user.preferences %>
+  <%#= render @user.preferences %>
 </ul>
 
-<%= link_to 'Edit', edit_administrator_user_path(@user) %> |
-<%= link_to 'Back', administrator_users_path %>
+<%= link_to 'Edit', edit_administrators_user_path(@user) %> |
+<%= link_to 'Destroy', administrators_user_path(@user), 
+      method: :delete, data: { confirm: 'Are you sure?' } %> | 
+<%= link_to 'Back', administrators_users_path %>

@@ -1,4 +1,4 @@
-<%= form_for [:administrator, @user] do |f| %>
+<%= form_for [:administrators, @user] do |f| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
@@ -23,7 +23,7 @@
 
   <div class="form-group">
     <%= f.label :role, class: "control-label" %>
-    <%= f.select :role, User.roles.keys, {}, class: "form-control" %>
+    <%= f.select :role, User::roles, {}, class: "form-control" %>
   </div>
 
   <div class="actions">

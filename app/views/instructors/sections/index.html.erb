@@ -1,0 +1,21 @@
+<div class="col-md-8 col-md-offset-2">
+
+<h2>Sections</h2>
+
+<% @sections.group_by(&:term).each do |term, sections| %>
+  <h4><%= term %></h4>
+
+  <div class="list-group">
+    <% sections.each do |section| %>
+      <%= link_to instructors_section_path(section), :class => "list-group-item" do %>
+        <h5 class="list-group-item-heading"><%= section.course.name %></h5>
+        <p class="list-group-item-text">
+        <span class="label label-primary"><%= section.location %></span>
+        <span class="label label-success"><%= "#{section.current_enrollment} / #{section.max_enrollment} students" %></span>
+        </p>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+</div>

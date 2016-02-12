@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   root 'pages#index'
   get 'about' => 'pages#about'
 
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  devise_for :users, :controllers => {
+    :omniauth_callbacks => "users/omniauth_callbacks"
+  }
 
   namespace :students do
     resources :skills
@@ -12,6 +14,12 @@ Rails.application.routes.draw do
   end
 
   namespace :instructors do
+    resources :sections do
+      resources :instructors_preferences, path: "preferences", except: [:index, :show, :update, :edit]
+      resources :requirements
+    end
+    get "profile" => "profile#edit"
+    put "profile" => "profile#update"
   end
 
   namespace :administrators do
