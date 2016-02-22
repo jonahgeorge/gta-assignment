@@ -1,4 +1,4 @@
-module Students
+module Student
   class Skill < ActiveRecord::Base
     self.table_name = "student_skills"
 

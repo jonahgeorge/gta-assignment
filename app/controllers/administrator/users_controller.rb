@@ -1,4 +1,4 @@
-module Administrators
+module Administrator
   class UsersController < BaseController
     before_action :set_user, only: [:show, :edit, :update, :destroy]
 

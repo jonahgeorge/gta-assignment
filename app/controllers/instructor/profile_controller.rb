@@ -1,4 +1,4 @@
-module Instructors
+module Instructor
   class ProfileController < BaseController
 
     def edit

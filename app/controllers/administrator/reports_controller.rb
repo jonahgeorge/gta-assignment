@@ -1,4 +1,4 @@
-module Administrators
+module Administrator
   class ReportsController < BaseController
 
     def student_preferences

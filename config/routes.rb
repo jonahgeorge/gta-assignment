@@ -7,22 +7,22 @@ Rails.application.routes.draw do
     :omniauth_callbacks => "users/omniauth_callbacks"
   }
 
-  namespace :students do
+  namespace :student do
     resources :skills
     resources :preferences
     resources :users
   end
 
-  namespace :instructors do
+  namespace :instructor do
     resources :sections do
-      resources :instructors_preferences, path: "preferences", except: [:index, :show, :update, :edit]
+      resources :preferences, except: [:index, :show, :update, :edit]
       resources :requirements
     end
     get "profile" => "profile#edit"
     put "profile" => "profile#update"
   end
 
-  namespace :administrators do
+  namespace :administrator do
     resources :departments
     resources :courses, except: [:index]
     resources :sections, except: [:index]

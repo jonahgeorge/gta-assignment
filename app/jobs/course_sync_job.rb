@@ -8,22 +8,22 @@ class CourseSyncJob < ActiveJob::Base
 
     sections = []
 
-    # Aggregate sections based on Prasad's tuple (instructor, course_id, location) 
+    # Aggregate sections based on Prasad's tuple (instructor, course_id, location)
     # and keep running-sum of current_enrollment and max_enrollment
     results.each do |row|
       section = find_sections_by_tuple(sections, row.instructor, @course.id, section_location(row), row.term)
       if section
-        section[:current_enrollment] += (row.capacity.to_i - row.availability.to_i)
-        section[:max_enrollment] += row.capacity.to_i
+        section[:current_enrollment] += row.current
+        section[:max_enrollment] += row.capacity
       else
-        sections << { 
-          :instructor         => row.instructor, 
-          :course_id          => @course.id, 
-          :location           => section_location(row), 
+        sections << {
+          :instructor         => row.instructor,
+          :course_id          => @course.id,
+          :location           => section_location(row),
           :term               => row.term,
-          :current_enrollment => (row.capacity.to_i - row.availability.to_i), 
-          :max_enrollment     => row.capacity.to_i,
-        } 
+          :current_enrollment => row.current,
+          :max_enrollment     => row.capacity,
+        }
       end
     end
 
@@ -33,7 +33,7 @@ class CourseSyncJob < ActiveJob::Base
       if @section
         @section.update_attributes(section)
       else
-        @section = Section.new(section) 
+        @section = Section.new(section)
       end
       @section.save
     end
@@ -46,20 +46,20 @@ class CourseSyncJob < ActiveJob::Base
     end
 
     def section_location(row)
-      return "Ecampus" if row.term == "WWW" 
+      return "Ecampus" if row.term == "WWW"
       return "On campus"
     end
 
     def results
-      params = { :subject_code  => @department.subject_code, :course_number => @course.course_number, }    
+      params = { subject_code: @department.subject_code, course_number: @course.course_number, }
       OsuCcScraper::Course.new(params).sections
     end
 
     def find_section(section)
       params = {
-        :instructor => section[:instructor],
-        :location   => section[:location],
-        :course_id  => section[:course_id],
+        instructor: section[:instructor],
+        location:   section[:location],
+        course_id:  section[:course_id],
       }
       Section.joins(course: :department).where(params).first
     end

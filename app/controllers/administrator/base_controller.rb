@@ -1,4 +1,4 @@
-module Administrators
+module Administrator
   class BaseController < ::ApplicationController
     before_filter :authenticate
     before_filter :authorize
@@ -15,7 +15,7 @@ module Administrators
     end
 
     def authorize
-      unless current_user.role == "Administrator"
+      unless current_user.is_administrator
         return redirect_to root_path, alert: "Must be an administrator."
       end
     end

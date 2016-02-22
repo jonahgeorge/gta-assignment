@@ -1,6 +1,6 @@
-module Instructors
+module Student
   class Preference < ActiveRecord::Base
-    self.table_name = "instructor_preferences"
+    self.table_name = "student_preferences"
 
     enum value: {
       :"Favor"             => 3,
@@ -10,15 +10,13 @@ module Instructors
       :"Disfavor"          => -999,
     }
 
-    validates_uniqueness_of :student_id, scope: [:section_id, :instructor_id]
+    validates_uniqueness_of :student_id, scope: [:course_id]
 
-    validates_presence_of :instructor_id
-    validates_presence_of :section_id
     validates_presence_of :student_id
+    validates_presence_of :course_id
     validates_presence_of :value
 
-    belongs_to :section
-    belongs_to :instructor
+    belongs_to :course
     belongs_to :student
   end
 end

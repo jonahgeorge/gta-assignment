@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160212221839) do
+ActiveRecord::Schema.define(version: 20160222000335) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,9 +28,9 @@ ActiveRecord::Schema.define(version: 20160212221839) do
   add_index "courses", ["department_id"], name: "index_courses_on_department_id", using: :btree
 
   create_table "courses_skills", force: :cascade do |t|
-    t.integer "course_id",     null: false
-    t.integer "skill_id",      null: false
-    t.integer "instructor_id"
+    t.integer "course_id", null: false
+    t.integer "skill_id",  null: false
+    t.integer "user_id"
     t.integer "value"
   end
 
@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(version: 20160212221839) do
   end
 
   create_table "student_preferences", force: :cascade do |t|
-    t.integer  "student_id"
+    t.integer  "user_id"
     t.integer  "course_id"
     t.integer  "value"
     t.datetime "created_at", null: false
@@ -94,8 +94,8 @@ ActiveRecord::Schema.define(version: 20160212221839) do
   end
 
   create_table "student_skills", force: :cascade do |t|
-    t.integer "student_id", null: false
-    t.integer "skill_id",   null: false
+    t.integer "user_id",  null: false
+    t.integer "skill_id", null: false
     t.integer "value"
   end
 
@@ -112,9 +112,10 @@ ActiveRecord::Schema.define(version: 20160212221839) do
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
-    t.string   "name"
     t.string   "role",                   default: "Student"
     t.float    "fte",                    default: 0.0
+    t.string   "first_name"
+    t.string   "last_name"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

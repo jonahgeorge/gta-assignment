@@ -3,38 +3,30 @@ class CourseCatalogSyncJob < ActiveJob::Base
 
   def perform(*args)
     results.each do |row|
-      @row = row
-      @department = find_department
+      department = Department.find_by_subject_code(row.subject_code)
 
-      if @department
-        @department.update_attributes(department_params)
+      if department
+        department.update_attributes(department_params(row))
       else
-        @department = Department.new(department_params) 
+        department = Department.new(department_params(row))
       end
 
-      @department.save
+      department.save
 
-      DepartmentSyncJob.perform_later @department
+      DepartmentSyncJob.perform_later(department)
     end
   end
 
   private
 
-  def results
-    whitelist = [ "CS", "ECE", "EE" ]
-    OsuCcScraper::Department.all.select { |d| whitelist.include? d.subject_code }
-  end
+    def results
+      whitelist = [ "CS", "ECE", "EE" ]
+      OsuCcScraper::University.new
+        .departments.
+        .select { |d| whitelist.include?(d.subject_code) }
+    end
 
-  def find_department
-    Department.where({
-      subject_code: @row.subject_code
-    }).first
-  end
-
-  def department_params
-    {
-      name:         @row.name,
-      subject_code: @row.subject_code,
-    }
-  end
+    def department_params(row)
+      { name: row.name, subject_code: row.subject_code, }
+    end
 end

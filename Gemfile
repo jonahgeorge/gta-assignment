@@ -1,13 +1,11 @@
 source 'https://rubygems.org'
 
-ruby '2.3.0'
-
 gem 'rails', '4.2.0'
 gem 'pg'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'rulp', require: false
-gem 'osu-cc-scraper'
+gem 'osu-cc-scraper', '~> 2.0.0'
 gem 'axlsx_rails'
 
 # Background Jobs

@@ -1,16 +1,15 @@
-module Instructors
-  class InstructorsPreferencesController < BaseController
+module Instructor
+  class PreferencesController < BaseController
     before_filter :set_section
     before_filter :set_students, :except => [:destory]
 
     def new
-      @preference = Instructors::Preference.new
+      @preference = current_user.instructor_preferences.new
     end
 
     def create
-      @preference = Instructors::Preference.new(instructors_preference_params)
+      @preference = current_user.instructor_preferences.new(instructor_preference_params)
       @preference.section_id = @section.id
-      @preference.instructor_id = current_user.id
 
       if @preference.save
         redirect_to instructors_section_path(@section)
@@ -20,7 +19,7 @@ module Instructors
     end
 
     def destroy
-      @preference = Instructors::Preference.find(params[:id])
+      @preference = Preference.find(params[:id])
       @preference.destroy
       redirect_to instructors_section_path(@section), notice: 'Preference was successfully destroyed.'
     end
@@ -28,7 +27,7 @@ module Instructors
     private
 
       def instructors_preference_params
-        params[:instructors_preference].permit(:student_id, :value)
+        params[:instructor_preference].permit(:student_id, :value)
       end
 
       def set_section

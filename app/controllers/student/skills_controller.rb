@@ -1,4 +1,4 @@
-module Students
+module Student
   class SkillsController < BaseController
     before_action :set_skill, only: [:show, :destroy]
 

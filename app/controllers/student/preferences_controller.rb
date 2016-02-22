@@ -1,4 +1,4 @@
-module Students
+module Student
   class PreferencesController < BaseController
     before_action :set_preference, only: [:destroy]
     before_action :set_departments, only: [:new, :create]

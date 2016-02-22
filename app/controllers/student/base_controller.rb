@@ -1,4 +1,4 @@
-module Instructors
+module Student
   class BaseController < ::ApplicationController
     before_filter :authenticate
     before_filter :authorize
@@ -10,8 +10,8 @@ module Instructors
     end
 
     def authorize
-      unless current_user.role == "Instructor"
-        return redirect_to root_path, alert: "Must be an instructor."
+      unless current_user.is_student
+        return redirect_to root_path, alert: "Must be a student."
       end
     end
   end

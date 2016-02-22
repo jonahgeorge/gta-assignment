@@ -1,4 +1,4 @@
-module Instructors
+module Instructor
   class RequirementsController < BaseController
     before_filter :set_section
     before_filter :set_students, :except => [:destory]

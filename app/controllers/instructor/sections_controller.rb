@@ -1,4 +1,4 @@
-module Instructors
+module Instructor
   class SectionsController < BaseController
 
     def index

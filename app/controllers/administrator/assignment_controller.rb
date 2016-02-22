@@ -1,4 +1,4 @@
-module Administrators
+module Administrator
   class AssignmentController < BaseController
 
     def index
