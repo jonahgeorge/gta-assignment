@@ -1,0 +1,13 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Student Preferences") do |sheet|
+
+  sheet.add_row [""] + @sections.map { |section|
+    "#{section.course.label} (#{section.instructor_raw})"
+  }
+
+  @students.each do |student|
+    sheet.add_row [ student.full_name ] + @sections.map { |section|
+      section.student_preferences.find_by_student_id(student.id).try!(:value_raw)
+    }
+  end
+end

@@ -1,0 +1,53 @@
+<%= form_for @skill do |f| %>
+
+  <% if params[:redirect] %>
+    <%= hidden_field_tag :redirect, params[:redirect] %>
+  <% end %>
+
+  <% if @skill.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@skill.errors.count, "error") %>
+        prohibited this skill from being saved:
+      </h2>
+      <ul>
+        <% @skill.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name, class: "control-label" %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :type, class: "control-label" %>
+    <% Skill.types.each do |key, value| %>
+      <div class="radio">
+        <label>
+          <%= f.radio_button :type, key %> <%= key %>
+        </label>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit class: "btn btn-default" %>
+
+    <% if params[:redirect] %>
+      <%= link_to 'Back', params[:redirect], class: "btn btn-default" %>
+    <% else %>
+      <%= link_to 'Back', skills_path, class: "btn btn-default" %>
+    <% end %>
+
+    <% unless @skill.new_record? %>
+      <%= link_to "Delete", skill_path(@skill), method: :delete,
+        class: "btn btn-danger pull-right", rel: "nofollow",
+        data: { confirm: "Are you sure? This will delete all associated student experience records as well." } %>
+    <% end %>
+  </div>
+
+<% end %>

@@ -1,36 +1,34 @@
+<div class="alert alert-warning">This page is currently non-functional</div>
+
 <header>
-<h2 style="display:inline-block;">Assignment</h2>
-<div class="pull-right" style="margin-top: 20px;">
-  <%= link_to "Run new assignment", 
-    administrator_assignment_path, class: "btn btn-primary" %>
-  <%= link_to "Revert to previous assignment", 
-    administrator_assignment_path, class: "btn btn-warning" %>
+  <h2 style="display:inline-block;">Assignment</h2>
+  <div class="pull-right" style="margin-top: 20px;">
+    <%= link_to "Run new assignment",
+      administrator_assignment_path, class: "btn btn-primary" %>
+    <%= link_to "Revert to previous assignment",
+      administrator_assignment_path, class: "btn btn-warning" %>
   </div>
 </header>
 
 <br>
-
-<style>
-td:first-child  {
-  min-width: 200px;
-} 
-td {
-  min-width: 75px;
-}
-</style>
 
 <div class="table-responsive">
   <table class="table">
     <tr>
       <td></td>
       <% @sections.each do |section| %>
-        <td><%= section %></td>
+        <td>
+          <span style="white-space: nowrap;"><%= section.course.label %></span><br>
+          <span style="white-space: nowrap;"><%= section.instructor_raw %></span>
+        </td>
       <% end %>
     </tr>
 
     <% @students.each do |student| %>
       <tr>
-        <td><%= student %></td>
+        <td>
+          <span style="white-space: nowrap;"><%= student.full_name %></span>
+        </td>
         <% @sections.each do |section| %>
           <td>
             <select>

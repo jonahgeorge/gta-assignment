@@ -1,31 +1,77 @@
-<p>
-  <label>Name</label>
-  <span><%= @user.name %></span>
-</p>
+<div class="row">
+  <div class="form-group">
+    <label class="col-sm-2 control-label">First Name</label>
+    <div class="col-sm-10">
+      <p class="form-control-static"><%= @user.first_name %></p>
+    </div>
+  </div>
 
-<p>
-  <label>Email</label>
-  <span><%= @user.email %></span>
-</p>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Last Name</label>
+    <div class="col-sm-10">
+      <p class="form-control-static"><%= @user.last_name %></p>
+    </div>
+  </div>
 
-<p>
-  <label>Role</label>
-  <span><%= @user.role %></span>
-</p>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Email</label>
+    <div class="col-sm-10">
+      <p class="form-control-static"><%= @user.email %></p>
+    </div>
+  </div>
 
-<h4>Skills</h4>
-<ul class="list-group">
-  <%# @user.skills.each do |skill| %>
-    <li class="list-group-item"><%#= skill.name %></li>
-  <%# end %>
-</ul>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Role</label>
+    <div class="col-sm-10">
+      <p class="form-control-static"><%= @user.role %></p>
+    </div>
+  </div>
 
-<h4>Course Preferences</h4>
-<ul class="list-group">
-  <%#= render @user.preferences %>
-</ul>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Administrator</label>
+    <div class="col-sm-10">
+      <p class="form-control-static"><%= @user.is_administrator ? "Yes" : "No" %></p>
+    </div>
+  </div>
+</div>
 
-<%= link_to 'Edit', edit_administrators_user_path(@user) %> |
-<%= link_to 'Destroy', administrators_user_path(@user), 
-      method: :delete, data: { confirm: 'Are you sure?' } %> | 
-<%= link_to 'Back', administrators_users_path %>
+<% if @user.is_student %>
+  <h4>Experience</h4>
+  <ul class="list-group">
+    <% @user.experiences.each do |experience| %>
+      <li class="list-group-item">
+        <span class="label label-primary"><%= experience.value %></span>
+        <%= experience.skill.name %>
+      </li>
+    <% end %>
+  </ul>
+
+  <h4>Section Preferences</h4>
+  <ul class="list-group">
+    <% @user.section_preferences.each do |section_preference| %>
+      <li class="list-group-item">
+        <span class="label label-primary"><%= section_preference.value %></span>
+        <%= section_preference.section.course.label %>
+        (<%= section_preference.section.instructor_raw %>)
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @user.is_instructor %>
+  <h4>Student Preferences</h4>
+  <ul class="list-group">
+    <% @user.student_preferences.each do |student_preference| %>
+      <li class="list-group-item">
+        <h4 class="list-group-item-heading"><%= student_preference.student.full_name %></h4>
+        <p class="list-group-item-text"><%= student_preference.section.course.label %></p>
+        <p class="list-group-item-text">
+          <span class="label label-primary"><%= student_preference.value %></span>
+        </p>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= link_to 'Edit', edit_administrator_user_path(@user), class: "btn btn-default" %>
+<%= link_to 'Back', administrator_users_path, class: "btn btn-default" %>

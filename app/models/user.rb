@@ -2,23 +2,38 @@ class User < ActiveRecord::Base
 
   before_validation :set_password, on: :create
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :omniauth_providers => [:google_oauth2]
+  devise :database_authenticatable, :registerable, :recoverable,
+         :rememberable, :trackable, :validatable, :omniauthable,
+         :omniauth_providers => [:google_oauth2]
 
-  has_many :preferences, class_name: "Students::Preference"
-  has_many :skills, class_name: "Students::Skill"
-  has_many :sections, -> (object) { 
-    where(instructor: "#{object.last_name}, #{object.first_name[0]}.")
-  }, foreign_key: 'instructor'
+  has_many :student_preferences, foreign_key: "instructor_id"
+  has_many :section_preferences, foreign_key: "student_id"
+  has_many :experiences, -> { joins(:skill) }, foreign_key: "student_id"
+  has_many :sections, foreign_key: "instructor", primary_key: "course_catalog_instructor_tag"
+
+  scope :students, -> { joins_sections.having('count(sections.id) = 0') }
+  scope :instructors, -> { joins_sections.having('count(sections.id) > 0') }
+  scope :joins_sections, -> {
+    joins('LEFT JOIN "sections" ON "sections"."instructor" = "users"."course_catalog_instructor_tag"')
+    .group('users.id')
+  }
 
   def self.from_omniauth(access_token)
     data = access_token.info
     user = User.where(email: data["email"]).first
     unless user
-      user = User.create(first_name: data["first_name"], last_name: data["last_name"], email: data["email"])
+      user = User.create({
+        first_name: data["first_name"],
+        last_name: data["last_name"],
+        email: data["email"],
+        course_catalog_instructor_tag: "#{data["last_name"]}, #{data["first_name"][0]}."
+      })
     end
     user
+  end
+
+  def full_name
+    "#{first_name} #{last_name}"
   end
 
   def is_student
@@ -27,10 +42,6 @@ class User < ActiveRecord::Base
 
   def is_instructor
     self.sections.length > 0
-  end
-
-  def is_administrator
-    true
   end
 
   def role

@@ -3,11 +3,6 @@ module Administrator
     before_filter :authenticate
     before_filter :authorize
 
-    def synchronize
-      CourseCatalogSyncJob.perform_later
-      redirect_to root_path
-    end
-
     def authenticate
       unless signed_in?
         return redirect_to root_path, alert: "Must be logged in."

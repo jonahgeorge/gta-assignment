@@ -6,6 +6,6 @@ class Course < ActiveRecord::Base
   has_many :requirements
 
   def label
-    "#{department.subject_code} #{course_number} #{name.titlecase}"
+    "#{department.subject_code} #{course_number}"
   end
 end

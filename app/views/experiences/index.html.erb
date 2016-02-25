@@ -1,0 +1,13 @@
+<h2>Experience</h2>
+
+<p>Your experience determines your eligibility to TA certain classes.</p>
+
+<div id="skills" class="list-group">
+  <% if @experiences.empty? %>
+    <li class="list-group-item">No experience found.</li>
+  <% else %>
+    <%= render @experiences %>
+  <% end %>
+</div>
+
+<%= link_to "Add experience", new_experience_path, class: "btn btn-default" %>

@@ -1,0 +1,41 @@
+<h2><%= @section.term %> <%= @section.course.name %></h2>
+
+<h4>Instructor Preferences</h4>
+
+<div class="list-group">
+  <% @section.student_preferences.each do |preference| %>
+    <div class="list-group-item">
+      <span class="label label-primary"><%= preference.value %></span>
+      <%= preference.student.first_name %> <%= preference.student.last_name %>
+      <%= button_to "Remove", section_student_preference_path(@section, preference), method: :delete,
+        class: "btn btn-danger btn-xs pull-right", rel: "nofollow",
+        data: { type: "script", confirm: "Are you sure?" } %>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to "New preference",
+  new_section_student_preference_path(@section),
+  { class: "btn btn-default" } %>
+
+<br>
+<br>
+<br>
+
+<h4>Required Skills</h4>
+
+<div class="list-group">
+  <% @section.course.requirements.each do |requirement| %>
+    <div class="list-group-item">
+      <span class="label label-primary"><%= requirement.value %></span>
+      <%= requirement.skill.name %>
+      <%= button_to "Remove", section_requirement_path(@section, requirement), method: :delete,
+        class: "btn btn-danger btn-xs pull-right", rel: "nofollow",
+        data: { type: "script", confirm: "Are you sure?" } %>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to "New requirement",
+  new_section_requirement_path(@section),
+  { class: "btn btn-default" } %>
