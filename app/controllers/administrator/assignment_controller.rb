@@ -1,9 +1,11 @@
 module Administrator
   class AssignmentController < BaseController
-    def index
-      @students = User.where(role: "student")
-      @instructos = User.where(role: "instructor")
 
+    def index
+      @students = User.students
+      @instructos = User.instructors
+      @sections = Section.all
     end
+
   end
 end

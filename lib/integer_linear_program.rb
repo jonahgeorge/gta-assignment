@@ -3,7 +3,7 @@ require "rulp"
 Rulp::log_level = Logger::UNKNOWN
 Rulp::print_solver_outputs = false
 
-class IntegerLinearProgram 
+class IntegerLinearProgram
 
   def initialize(students, sections, fte_per_section = 0.25, students_per_ta = 30)
     @students = students
@@ -15,11 +15,9 @@ class IntegerLinearProgram
     enrollment_contraint
     fte_contraint
     skill_contraint
-    experience_contraint
   end
 
   def solve
-    # @problem.solve
     @problem.cbc
   end
 
@@ -53,12 +51,12 @@ class IntegerLinearProgram
       variables = []
       @students.each do |student|
         @sections.each do |section|
-          student_score = student.preferences.where(course_id: section.course_id).first.try(:value)
-          student_score ||= 1 
+          student_score = student.section_preferences.find_by_section_id(section.id).try(:value_raw)
+          student_score ||= 1
 
           # FIXME
-          instructor_score = student.preferences.where(course_id: section.course_id).first.try(:value)
-          instructor_score ||= 1 
+          instructor_score = student.student_preferences.find_by_section_id(section.id).try(:value_raw)
+          instructor_score ||= 1
 
           variables << (student_score * instructor_score * VAR_b(student.id, section.id))
         end
@@ -75,7 +73,7 @@ class IntegerLinearProgram
     end
 
     def fte_contraint
-      @students.each do |student| 
+      @students.each do |student|
         variables = @sections.map { |section| VAR_b(student.id, section.id) }
         constraint = (variables.sum <= (student.fte / @fte_per_section))
         @problem[ constraint ]
@@ -85,9 +83,4 @@ class IntegerLinearProgram
     def skill_contraint
       # FIXME
     end
-
-    def experience_contraint
-      # FIXME
-    end
 end
-

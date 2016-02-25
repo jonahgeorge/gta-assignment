@@ -1,0 +1,33 @@
+<h2>Settings</h2>
+
+<div class="well">
+  <h4>Data Management</h4>
+
+  <%= link_to "Manage Users", administrator_users_path, class: "btn btn-primary" %>
+  <%= link_to "Manage Skills", skills_path, class: "btn btn-primary" %>
+</div>
+
+<div class="well">
+  <h4>Course Catalog</h4>
+
+  <p>Executes a background job to sync the GtaAssignment course data with the Oregon State Course Catalog.</p>
+
+  <%= link_to "Sync with Course Catalog",
+    administrator_settings_synchronize_path,
+    remote: true, class: "btn btn-primary",
+    data: { confirm: "Are you sure?" } %>
+</div>
+
+<div class="well">
+  <h4>Export Preferences</h4>
+
+  <p>Export Student and Instructor preferences in Excel format.</p>
+
+  <%= link_to "Export Section Preferences",
+    administrator_settings_section_preferences_path(format: "xlsx"),
+    class: "btn btn-primary" %>
+
+  <%= link_to "Export Student Preferences",
+    administrator_settings_student_preferences_path(format: "xlsx"),
+    class: "btn btn-primary" %>
+</div>

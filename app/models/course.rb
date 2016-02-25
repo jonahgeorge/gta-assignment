@@ -3,9 +3,9 @@ class Course < ActiveRecord::Base
 
   belongs_to :department
   has_many :sections
-  has_and_belongs_to_many :skills
+  has_many :requirements
 
   def label
-    "#{department.subject_code} #{course_number} #{name.titlecase}"
+    "#{department.subject_code} #{course_number}"
   end
 end

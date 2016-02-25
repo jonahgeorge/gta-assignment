@@ -11,7 +11,7 @@ class DepartmentSyncJob < ActiveJob::Base
       if @course
         @course.update_attributes(course_params)
       else
-        @course = Course.new(course_params) 
+        @course = Course.new(course_params)
       end
 
       @course.save
@@ -35,7 +35,7 @@ class DepartmentSyncJob < ActiveJob::Base
     }).first
   end
 
-  def course_params 
+  def course_params
     {
       name:          @row.name,
       department_id: @department.id,

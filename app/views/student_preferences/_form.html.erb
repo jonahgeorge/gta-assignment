@@ -1,0 +1,28 @@
+<%= form_for [@section, @preference] do |f| %>
+  <% if @preference.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@preference.errors.count, "error") %>
+        prohibited this preference from being saved:
+      </h2>
+      <ul>
+        <% @preference.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :student_id, class: "control-label" %>
+    <%= f.select :student_id, @students.collect { |s| [ "#{s.first_name} #{s.last_name}", s.id ] },
+      { :include_blank => true }, { :class => "form-control" } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :value, class: "control-label" %>
+    <%= f.select :value, StudentPreference.values.keys,
+      { :include_blank => true }, { :class => "form-control"} %>
+  </div>
+
+  <%= f.submit class: "btn btn-default" %>
+<% end %>

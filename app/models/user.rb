@@ -1,35 +1,57 @@
 class User < ActiveRecord::Base
+
   before_validation :set_password, on: :create
 
-  enum role: { student: 0, instructor: 1, administrator: 2 }
+  devise :database_authenticatable, :registerable, :recoverable,
+         :rememberable, :trackable, :validatable, :omniauthable,
+         :omniauth_providers => [:google_oauth2]
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :omniauth_providers => [:google_oauth2]
+  has_many :student_preferences, foreign_key: "instructor_id"
+  has_many :section_preferences, foreign_key: "student_id"
+  has_many :experiences, -> { joins(:skill) }, foreign_key: "student_id"
+  has_many :sections, foreign_key: "instructor", primary_key: "course_catalog_instructor_tag"
 
-  has_many :preferences
-  has_many :skills_users
-  has_many :skills, through: :skills_users
+  scope :students, -> { joins_sections.having('count(sections.id) = 0') }
+  scope :instructors, -> { joins_sections.having('count(sections.id) > 0') }
+  scope :joins_sections, -> {
+    joins('LEFT JOIN "sections" ON "sections"."instructor" = "users"."course_catalog_instructor_tag"')
+    .group('users.id')
+  }
 
   def self.from_omniauth(access_token)
     data = access_token.info
-    user = User.where(:email => data["email"]).first
+    user = User.where(email: data["email"]).first
     unless user
-      user = User.create name: data["name"], email: data["email"]
+      user = User.create({
+        first_name: data["first_name"],
+        last_name: data["last_name"],
+        email: data["email"],
+        course_catalog_instructor_tag: "#{data["last_name"]}, #{data["first_name"][0]}."
+      })
     end
     user
   end
 
-  def self.students
-    where(role: "student")
+  def full_name
+    "#{first_name} #{last_name}"
   end
 
-  def self.instructors
-    where(role: "instructor")
+  def is_student
+    self.sections.length == 0
   end
 
-  def self.administrators
-    where(role: "administrator")
+  def is_instructor
+    self.sections.length > 0
+  end
+
+  def role
+    if is_student
+      "Student"
+    elsif is_instructor
+      "Instructor"
+    elsif is_administrator
+      "Administrator"
+    end
   end
 
   private

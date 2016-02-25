@@ -7,25 +7,28 @@ Rails.application.routes.draw do
     :omniauth_callbacks => "users/omniauth_callbacks"
   }
 
-  namespace :student do
-    resources :skills_users
-    resources :preferences
-    resources :users
-  end
+  resources :skills
 
-  namespace :instructor do
-  end
+  # Students
+  resources :section_preferences
+  resources :experiences
 
+  # Instructors
+  resources :sections do
+    resources :student_preferences
+    resources :requirements
+  end
+  
   namespace :administrator do
     resources :departments
-    resources :courses, except: [:index]
-    resources :sections, except: [:index]
+    resources :courses
+    resources :sections
     resources :users
-    get 'settings'               => 'pages#settings'
-    get 'synchronize'            => 'base#synchronize'
-    get 'student_preferences'    => 'reports#student_preferences'
-    get 'instructor_preferences' => 'reports#instructor_preferences'
-    get 'assignment'             => 'assignment#index'
+    get 'settings' => 'settings#index'
+    get 'settings/synchronize' => 'settings#synchronize'
+    get 'settings/section_preferences' => 'settings#section_preferences'
+    get 'settings/student_preferences' => 'settings#student_preferences'
+    get 'assignment' => 'assignment#index'
   end
 
   match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]

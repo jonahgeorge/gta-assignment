@@ -1,25 +1,26 @@
 FactoryGirl.define do
 
   factory :user do
-    name "John Doe"
+    first_name "John" 
+    last_name "Doe"
     sequence(:email) { |n| "user#{n}@oregonstate.edu" }
     password "keyboardcat"
 
     factory :administrator, class: User do
-      role "administrator" 
+      is_administrator true 
     end
 
     factory :instructor, class: User do
-      role "instructor" 
     end
 
     factory :student, class: User do
-      role "student" 
       fte 0.25
     end
   end
 
-  factory :preference do
+  factory :section_preference do
+  end
+  factory :student_preference do
   end
 
   factory :department do

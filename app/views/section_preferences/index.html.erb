@@ -1,0 +1,17 @@
+<h2>Section Preferences</h2>
+
+<p>
+  By marking sections as favorable or disfavorable, you can impact the
+  likelihood of being assinged to those sections.
+</p>
+
+
+<% if @section_preferences.empty? %>
+  <div class="well">No section preferences found.</div>
+<% else %>
+  <div class="list-group">
+    <%= render @section_preferences %>
+  </div>
+<% end %>
+
+<%= link_to "Add a section preference", new_section_preference_path, class: "btn btn-default" %>
