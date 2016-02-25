@@ -12,7 +12,7 @@ RSpec.describe IntegerLinearProgram do
     student2 = FactoryGirl.create(:student, fte: 0.5)
 
     @sections = Section.all
-    @students = Student.all
+    @students = User.students
     
     problem = IntegerLinearProgram.new(@students, @sections)
     problem.solve
@@ -30,7 +30,7 @@ RSpec.describe IntegerLinearProgram do
     FactoryGirl.create(:student)
 
     @sections = Section.all
-    @students = Student.all
+    @students = User.students
     
     problem = IntegerLinearProgram.new(@students, @sections)
     problem.solve

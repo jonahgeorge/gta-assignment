@@ -51,11 +51,11 @@ class IntegerLinearProgram
       variables = []
       @students.each do |student|
         @sections.each do |section|
-          student_score = student.preferences.where(course_id: section.course_id).first.try(:value)
+          student_score = student.section_preferences.find_by_section_id(section.id).try(:value_raw)
           student_score ||= 1
 
           # FIXME
-          instructor_score = student.preferences.where(course_id: section.course_id).first.try(:value)
+          instructor_score = student.student_preferences.find_by_section_id(section.id).try(:value_raw)
           instructor_score ||= 1
 
           variables << (student_score * instructor_score * VAR_b(student.id, section.id))

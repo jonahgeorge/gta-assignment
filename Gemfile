@@ -33,10 +33,13 @@ gem 'quiet_assets', group: :development
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem 'dotenv-rails'
+  gem 'pry-rails'
+end
+
+group :development do
   gem 'byebug'
   gem 'web-console', '~> 2.0'
   gem 'spring'
-  gem 'pry-rails'
-  gem 'factory_girl_rails'
-  gem 'dotenv-rails'
 end

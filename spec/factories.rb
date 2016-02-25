@@ -1,7 +1,8 @@
 FactoryGirl.define do
 
   factory :user do
-    name "John Doe"
+    first_name "John" 
+    last_name "Doe"
     sequence(:email) { |n| "user#{n}@oregonstate.edu" }
     password "keyboardcat"
 
@@ -17,7 +18,9 @@ FactoryGirl.define do
     end
   end
 
-  factory :preference do
+  factory :section_preference do
+  end
+  factory :student_preference do
   end
 
   factory :department do
