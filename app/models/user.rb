@@ -9,12 +9,12 @@ class User < ActiveRecord::Base
   has_many :student_preferences, foreign_key: "instructor_id"
   has_many :section_preferences, foreign_key: "student_id"
   has_many :experiences, -> { joins(:skill) }, foreign_key: "student_id"
-  has_many :sections, foreign_key: "instructor", primary_key: "course_catalog_instructor_tag"
+  has_many :sections, foreign_key: "cc_instructor_tag", primary_key: "cc_instructor_tag"
 
   scope :students, -> { joins_sections.having('count(sections.id) = 0') }
   scope :instructors, -> { joins_sections.having('count(sections.id) > 0') }
   scope :joins_sections, -> {
-    joins('LEFT JOIN "sections" ON "sections"."instructor" = "users"."course_catalog_instructor_tag"')
+    joins('LEFT JOIN "sections" ON "sections"."cc_instructor_tag" = "users"."cc_instructor_tag"')
     .group('users.id')
   }
 
@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
         first_name: data["first_name"],
         last_name: data["last_name"],
         email: data["email"],
-        course_catalog_instructor_tag: "#{data["last_name"]}, #{data["first_name"][0]}."
+        cc_instructor_tag: "#{data["last_name"]}, #{data["first_name"][0]}."
       })
     end
     user

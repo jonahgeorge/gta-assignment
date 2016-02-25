@@ -5,6 +5,7 @@ class DepartmentSyncJob < ActiveJob::Base
     @department = department
 
     results.each do |row|
+      puts row
       @row = row
       @course = find_course
 
@@ -23,9 +24,8 @@ class DepartmentSyncJob < ActiveJob::Base
   private
 
   def results
-    OsuCcScraper::Department.new({
-      subject_code: @department.subject_code
-    }).courses
+    OsuCcScraper::Department.new(
+      @department.name, @department.subject_code).courses
   end
 
   def find_course

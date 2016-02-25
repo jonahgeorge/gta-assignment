@@ -2,7 +2,7 @@ wb = xlsx_package.workbook
 wb.add_worksheet(name: "Student Preferences") do |sheet|
 
   sheet.add_row [""] + @sections.map { |section|
-    "#{section.course.label} (#{section.instructor_raw})"
+    "#{section.course.label} (#{section.cc_instructor_tag})"
   }
 
   @students.each do |student|

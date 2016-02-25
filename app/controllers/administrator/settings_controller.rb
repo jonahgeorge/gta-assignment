@@ -5,6 +5,7 @@ module Administrator
 
     def synchronize
       CourseCatalogSyncJob.perform_later
+      redirect_to administrator_settings_path
     end
 
     def section_preferences

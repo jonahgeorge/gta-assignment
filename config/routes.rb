@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     resources :sections
     resources :users
     get 'settings' => 'settings#index'
-    get 'settings/synchronize' => 'settings#synchronize'
+    post 'settings/synchronize' => 'settings#synchronize'
     get 'settings/section_preferences' => 'settings#section_preferences'
     get 'settings/student_preferences' => 'settings#student_preferences'
     get 'assignment' => 'assignment#index'

@@ -8,7 +8,7 @@
   <%= section_preference.section.course.label %>
   <%= section_preference.section.course.name %>
 
-  (<%= section_preference.section.instructor_raw %>)
+  (<%= section_preference.section.cc_instructor_tag %>)
 
   <%= button_to "Remove", section_preference_path(section_preference), method: :delete,
     class: "btn btn-danger btn-xs pull-right", rel: "nofollow",

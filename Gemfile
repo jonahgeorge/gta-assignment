@@ -29,7 +29,6 @@ gem 'devise'
 gem 'omniauth-google-oauth2'
 
 gem 'rails_12factor', group: :production
-gem 'quiet_assets', group: :development
 
 group :development, :test do
   gem 'rspec-rails'

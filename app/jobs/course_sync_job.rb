@@ -17,7 +17,7 @@ class CourseSyncJob < ActiveJob::Base
         section[:max_enrollment] += row.capacity
       else
         sections << {
-          :instructor         => row.instructor,
+          :cc_instructor_tag  => row.instructor,
           :course_id          => @course.id,
           :location           => section_location(row),
           :term               => row.term,
@@ -42,7 +42,12 @@ class CourseSyncJob < ActiveJob::Base
   private
 
     def find_sections_by_tuple(sections, instructor, course_id, location, term)
-      sections.select{ |s| s[:instructor] == instructor && s[:course_id] == course_id && s[:location] == location && s[:term] == term }.first
+      sections.select{ |section| 
+        section[:instructor] == instructor && 
+        section[:course_id] == course_id && 
+        section[:location] == location && 
+        section[:term] == term 
+      }.first
     end
 
     def section_location(row)
@@ -51,15 +56,15 @@ class CourseSyncJob < ActiveJob::Base
     end
 
     def results
-      params = { subject_code: @department.subject_code, course_number: @course.course_number, }
-      OsuCcScraper::Course.new(params).sections
+      OsuCcScraper::Course.new(
+        @department.subject_code, @course.course_number).sections
     end
 
     def find_section(section)
       params = {
-        instructor: section[:instructor],
-        location:   section[:location],
-        course_id:  section[:course_id],
+        cc_instructor_tag: section[:instructor],
+        location:          section[:location],
+        course_id:         section[:course_id],
       }
       Section.joins(course: :department).where(params).first
     end

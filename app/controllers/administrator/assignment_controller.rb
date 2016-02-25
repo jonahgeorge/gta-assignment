@@ -4,7 +4,7 @@ module Administrator
     def index
       @students = User.students
       @instructos = User.instructors
-      @sections = Section.all
+      @sections = Section.includes(course: :department).all
     end
 
   end
