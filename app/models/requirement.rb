@@ -1,6 +1,4 @@
 class Requirement < ActiveRecord::Base
-  self.table_name = "courses_skills"
-
   enum value: {
     :"Qualified"          => 2,
     :"Slightly qualified" => 1,

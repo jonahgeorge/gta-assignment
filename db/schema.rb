@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160226001619) do
+ActiveRecord::Schema.define(version: 20160226003237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,13 +26,6 @@ ActiveRecord::Schema.define(version: 20160226001619) do
   end
 
   add_index "courses", ["department_id"], name: "index_courses_on_department_id", using: :btree
-
-  create_table "courses_skills", force: :cascade do |t|
-    t.integer "course_id",     null: false
-    t.integer "skill_id",      null: false
-    t.integer "instructor_id"
-    t.integer "value"
-  end
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -57,13 +50,25 @@ ActiveRecord::Schema.define(version: 20160226001619) do
     t.string   "subject_code"
   end
 
-  create_table "instructor_preferences", force: :cascade do |t|
-    t.integer  "section_id"
-    t.integer  "instructor_id"
+  create_table "experiences", force: :cascade do |t|
+    t.integer "student_id", null: false
+    t.integer "skill_id",   null: false
+    t.integer "value"
+  end
+
+  create_table "requirements", force: :cascade do |t|
+    t.integer "course_id",     null: false
+    t.integer "skill_id",      null: false
+    t.integer "instructor_id"
+    t.integer "value"
+  end
+
+  create_table "section_preferences", force: :cascade do |t|
     t.integer  "student_id"
+    t.integer  "section_id"
     t.integer  "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "sections", force: :cascade do |t|
@@ -87,17 +92,12 @@ ActiveRecord::Schema.define(version: 20160226001619) do
   end
 
   create_table "student_preferences", force: :cascade do |t|
-    t.integer  "student_id"
     t.integer  "section_id"
+    t.integer  "instructor_id"
+    t.integer  "student_id"
     t.integer  "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "student_skills", force: :cascade do |t|
-    t.integer "student_id", null: false
-    t.integer "skill_id",   null: false
-    t.integer "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: :cascade do |t|

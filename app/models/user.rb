@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-
   before_validation :set_password, on: :create
 
   devise :database_authenticatable, :registerable, :recoverable,

@@ -1,6 +1,4 @@
 class Experience < ActiveRecord::Base
-  self.table_name = "student_skills"
-
   enum value: {
     :"Qualified"          => 2,
     :"Slightly qualified" => 1,

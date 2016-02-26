@@ -1,12 +1,10 @@
 class StudentPreference < ActiveRecord::Base
-  self.table_name = "instructor_preferences"
-
   enum value: {
-    :"Disfavor"          => 0,
-    :"Slightly disfavor" => 1,
-    :"Neutral"           => 2,
-    :"Slightly favor"    => 3,
     :"Favor"             => 4,
+    :"Slightly favor"    => 3,
+    :"Neutral"           => 2,
+    :"Slightly disfavor" => 1,
+    :"Disfavor"          => 0,
   }
 
   def value_raw

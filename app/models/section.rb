@@ -1,5 +1,4 @@
 class Section < ActiveRecord::Base
-
   enum location: {
     :"On campus" => 0,
     :"Ecampus"   => 1
