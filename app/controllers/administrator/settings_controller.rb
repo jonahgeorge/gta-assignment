@@ -4,7 +4,7 @@ module Administrator
     end
 
     def synchronize
-      CourseCatalogSyncJob.perform_later
+      UniversitySyncJob.perform_later
       redirect_to administrator_settings_path
     end
 

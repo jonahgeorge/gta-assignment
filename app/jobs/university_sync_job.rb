@@ -1,4 +1,4 @@
-class CourseCatalogSyncJob < ActiveJob::Base
+class UniversitySyncJob < ActiveJob::Base
   queue_as :default
 
   def perform(*args)
@@ -20,7 +20,7 @@ class CourseCatalogSyncJob < ActiveJob::Base
   private
 
     def results
-      whitelist = [ "CS", "ECE" ]
+      whitelist = [ "CS", "ECE", "ROB", "ENGR" ]
       OsuCcScraper::University.new
         .departments
         .select { |d| whitelist.include?(d.subject_code) }
