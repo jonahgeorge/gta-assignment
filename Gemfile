@@ -7,6 +7,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'rulp', require: false
 gem 'osu-cc-scraper', '~> 2.0.0'
 gem 'axlsx_rails'
+gem "rails-settings-cached", "~> 0.4.0"
 
 # Background Jobs
 gem 'delayed_job'
