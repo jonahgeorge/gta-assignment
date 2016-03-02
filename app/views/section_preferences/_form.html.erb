@@ -16,7 +16,7 @@
   <div class="form-group">
     <%= f.label :section_id, class: "control-label" %>
     <%= f.select :section_id, @sections.collect { |s|
-        [ "#{s.term} #{s.course.label} #{s.course.name} (#{s.cc_instructor_tag})", s.id ]
+        [ "#{s.course.label} #{s.course.name} (#{s.cc_instructor_tag})", s.id ]
       }, {}, {class: "form-control"} %>
   </div>
 

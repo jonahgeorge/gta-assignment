@@ -8,12 +8,24 @@
 </div>
 
 <div class="well">
+  <h4>Current Term</h4>
+
+  <%= form_tag "/administrator/settings/current_term", method: "post" do %>
+    <div class="form-group">
+    <%= select_tag :current_term,
+      options_for_select(@terms, Setting.current_term), class: "form-control" %>
+    </div>
+    <%= submit_tag "Save", class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<div class="well">
   <h4>Course Catalog</h4>
 
   <p>Executes a background job to sync the GtaAssignment course data with the Oregon State Course Catalog.</p>
 
-  <%= button_to "Sync with Course Catalog", administrator_settings_synchronize_path, 
-    method: :post, class: "btn btn-primary", data: { confirm: "Are you sure?" } 
+  <%= button_to "Sync with Course Catalog", administrator_settings_synchronize_path,
+    method: :post, class: "btn btn-primary", data: { confirm: "Are you sure?" }
   %>
 </div>
 

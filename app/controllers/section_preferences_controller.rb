@@ -3,7 +3,7 @@ class SectionPreferencesController < ApplicationController
   before_action :set_sections, only: [:new, :create]
 
   def index
-    @section_preferences = current_user.section_preferences
+    @section_preferences = current_user.section_preferences.with_current_term
   end
 
   def new
@@ -32,7 +32,7 @@ class SectionPreferencesController < ApplicationController
   end
 
   def set_sections
-    @sections = Section.all
+    @sections = Section.with_current_term
   end
 
   def section_preference_params

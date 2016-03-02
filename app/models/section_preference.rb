@@ -11,6 +11,10 @@ class SectionPreference < ActiveRecord::Base
     read_attribute('value')
   end
 
+  scope :with_current_term, -> {
+    joins(:section).where(sections: { term: Setting.current_term })
+  }
+
   validates_uniqueness_of :student_id, scope: [:section_id]
 
   validates_presence_of :student_id

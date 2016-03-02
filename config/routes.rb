@@ -18,13 +18,14 @@ Rails.application.routes.draw do
     resources :student_preferences
     resources :requirements
   end
-  
+
   namespace :administrator do
     resources :departments
     resources :courses
     resources :sections
     resources :users
     get 'settings' => 'settings#index'
+    post 'settings/current_term' => 'settings#set_current_term'
     post 'settings/synchronize' => 'settings#synchronize'
     get 'settings/section_preferences' => 'settings#section_preferences'
     get 'settings/student_preferences' => 'settings#student_preferences'

@@ -1,6 +1,12 @@
 module Administrator
   class SettingsController < BaseController
     def index
+      @terms = Section.select("DISTINCT term").map { |s| [s.term, s.term] }
+    end
+
+    def set_current_term
+      Setting.current_term = params[:current_term]
+      redirect_to administrator_settings_path
     end
 
     def synchronize
@@ -10,7 +16,7 @@ module Administrator
 
     def section_preferences
       @students = User.students
-      @sections = Section.includes(:section_preferences)
+      @sections = Section.includes(:section_preferences).with_current_term
 
       respond_to do |format|
         format.xlsx
@@ -19,8 +25,8 @@ module Administrator
 
     def student_preferences
       @students = User.students
-      @sections = Section.includes(:section_preferences)
-      
+      @sections = Section.includes(:section_preferences).with_current_term
+
       respond_to do |format|
         format.xlsx
       end
