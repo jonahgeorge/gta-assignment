@@ -1,0 +1,7 @@
+<%= link_to section, :class => "list-group-item" do %>
+  <h5 class="list-group-item-heading"><%= section.course.name %></h5>
+  <p class="list-group-item-text">
+  <span class="label label-primary"><%= section.location %></span>
+  <span class="label label-success"><%= "#{section.current_enrollment} / #{section.max_enrollment} students" %></span>
+  </p>
+<% end %>

@@ -1,0 +1,9 @@
+<div class="list-group-item">
+  <span class="label label-primary"><%= requirement.value %></span>
+  <%= requirement.skill.name %>
+  <div class="pull-right">
+    <%= button_to "Remove", section_requirement_path(@section, requirement), method: :delete,
+      class: "btn btn-danger btn-xs", rel: "nofollow",
+      data: { type: "script", confirm: "Are you sure?" } %>
+  </div>
+</div>

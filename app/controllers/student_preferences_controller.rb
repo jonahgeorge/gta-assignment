@@ -18,7 +18,7 @@ class StudentPreferencesController < ApplicationController
   end
 
   def destroy
-    @preference = Preference.find(params[:id])
+    @preference = StudentPreference.find(params[:id])
     @preference.destroy
     redirect_to section_path(@section), notice: 'Student preference was successfully destroyed.'
   end

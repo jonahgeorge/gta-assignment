@@ -10,7 +10,9 @@
 
   (<%= section_preference.section.cc_instructor_tag %>)
 
+  <div class="pull-right">
   <%= button_to "Remove", section_preference_path(section_preference), method: :delete,
-    class: "btn btn-danger btn-xs pull-right", rel: "nofollow",
+    class: "btn btn-danger btn-xs", rel: "nofollow",
     data: { type: "script", confirm: "Are you sure?" } %>
+  </div>
 </div>
