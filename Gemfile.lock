@@ -145,7 +145,7 @@ GEM
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
     orm_adapter (0.5.0)
-    osu-cc-scraper (3.0.0)
+    osu-cc-scraper (4.0.0)
       oga (~> 2.1.0)
     pg (0.18.4)
     pry (0.10.3)
@@ -275,7 +275,7 @@ DEPENDENCIES
   jquery-rails
   jquery-turbolinks
   omniauth-google-oauth2
-  osu-cc-scraper (~> 3.0.0)
+  osu-cc-scraper (~> 4.0.0)
   pg
   pry-rails
   rails (= 4.2.0)
