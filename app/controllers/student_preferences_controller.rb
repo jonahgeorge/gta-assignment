@@ -34,6 +34,6 @@ class StudentPreferencesController < ApplicationController
   end
 
   def set_students
-    @students = User.students
+    @students = User.gtas
   end
 end

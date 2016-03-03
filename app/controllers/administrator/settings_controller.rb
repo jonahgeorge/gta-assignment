@@ -15,7 +15,7 @@ module Administrator
     end
 
     def section_preferences
-      @students = User.students
+      @students = User.gtas
       @sections = Section.includes(:section_preferences).with_current_term
 
       respond_to do |format|
@@ -24,7 +24,7 @@ module Administrator
     end
 
     def student_preferences
-      @students = User.students
+      @students = User.gtas
       @sections = Section.includes(:section_preferences).with_current_term
 
       respond_to do |format|

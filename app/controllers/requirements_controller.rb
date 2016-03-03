@@ -1,6 +1,5 @@
 class RequirementsController < ApplicationController
   before_filter :set_section
-  before_filter :set_students, :except => [:destory]
 
   def new
     @requirement = Requirement.new
@@ -32,9 +31,5 @@ class RequirementsController < ApplicationController
 
   def set_section
     @section = Section.find(params[:section_id])
-  end
-
-  def set_students
-    @students = User.students
   end
 end

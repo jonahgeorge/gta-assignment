@@ -1,72 +1,79 @@
-# FIXME Refactor with `find_or_create_by_value`
 class CourseSyncJob < ActiveJob::Base
   queue_as :default
 
-  def perform(department, course)
-    @department = department
-    @course = course
+  def perform(course_id, cc_course_json)
+    cc_course = OsuCcScraper::Course.from_json(cc_course_json)
 
-    sections = []
+    section_tuples = construct_tuples(course_id, cc_course)
 
-    # Aggregate sections based on Prasad's tuple (instructor, course_id, location)
-    # and keep running-sum of current_enrollment and max_enrollment
-    results.each do |row|
-      section = find_sections_by_tuple(sections, row.instructor, @course.id, section_location(row), row.term)
-      if section
-        section[:current_enrollment] += row.current
-        section[:max_enrollment] += row.capacity
-      else
-        sections << {
-          :cc_instructor_tag  => row.instructor,
-          :course_id          => @course.id,
-          :location           => section_location(row),
-          :term               => row.term,
-          :current_enrollment => row.current,
-          :max_enrollment     => row.capacity,
-        }
-      end
-    end
-
-    # Save sections
-    sections.each do |section|
-      @section = find_section(section)
-      if @section
-        @section.update_attributes(section)
-      else
-        @section = Section.new(section)
-      end
-      @section.save
+    section_tuples.each do |section_tuple|
+      section = Section.find_or_create_by(section_params(section_tuple))
+      section.update_attributes(section_tuple)
+      section.save
     end
   end
 
   private
 
-    def find_sections_by_tuple(sections, instructor, course_id, location, term)
-      sections.select{ |section| 
-        section[:instructor] == instructor && 
-        section[:course_id] == course_id && 
-        section[:location] == location && 
-        section[:term] == term 
+    def construct_tuples(course_id, cc_course)
+      section_tuples = []
+
+      # Aggregate sections based on Prasad's tuple (instructor, course_id, location)
+      # and keep running-sum of current_enrollment and max_enrollment
+      cc_sections(cc_course).each do |cc_section|
+
+        section_tuple = find_section_by_tuple(
+          section_tuples, cc_section.instructor, course_id,
+          section_location(cc_section), cc_section.term)
+
+        if section_tuple
+          section_tuple[:current_enrollment] += cc_section.current
+          section_tuple[:max_enrollment] += cc_section.capacity
+        else
+          section_tuples << {
+            :cc_instructor_tag  => cc_section.instructor,
+            :course_id          => course_id,
+            :location           => section_location(cc_section),
+            :term               => cc_section.term,
+            :current_enrollment => cc_section.current,
+            :max_enrollment     => cc_section.capacity,
+          }
+        end
+      end
+
+      section_tuples
+    end
+
+    def find_section_by_tuple(section_tuples, instructor, course_id, location, term)
+      section_tuples.select { |section_tuple|
+        section_tuple[:instructor] == instructor &&
+        section_tuple[:course_id] == course_id &&
+        section_tuple[:location] == location &&
+        section_tuple[:term] == term
       }.first
     end
 
-    def section_location(row)
-      return "Ecampus" if row.term == "WWW"
-      return "On campus"
-    end
-
-    def results
-      OsuCcScraper::Course.new(
-        @department.subject_code, @course.course_number).sections
-    end
-
-    def find_section(section)
-      params = {
-        cc_instructor_tag: section[:instructor],
-        location:          section[:location],
-        course_id:         section[:course_id],
+    def cc_sections(cc_course)
+      cc_course.sections.select { |s|
+        section_whitelist.include?(s.campus)
       }
-      Section.joins(course: :department).where(params).first
+    end
+
+    def section_whitelist
+      [ "Corv", "Ecampus-Distance Education-LD" ]
+    end
+
+    def section_location(cc_section)
+      (cc_section.campus == "Corv") ? "On campus" : "Ecampus"
+    end
+
+    def section_params(section_tuple)
+      {
+        cc_instructor_tag: section_tuple[:instructor],
+        location:          section_tuple[:location],
+        course_id:         section_tuple[:course_id],
+        term:              section_tuple[:term]
+      }
     end
 
 end

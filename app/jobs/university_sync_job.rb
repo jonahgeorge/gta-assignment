@@ -2,31 +2,25 @@ class UniversitySyncJob < ActiveJob::Base
   queue_as :default
 
   def perform(*args)
-    results.each do |row|
-      department = Department.find_by_subject_code(row.subject_code)
-
-      if department
-        department.update_attributes(department_params(row))
-      else
-        department = Department.new(department_params(row))
-      end
-
+    cc_departments.each do |cc_department|
+      department = Department.find_or_create_by(subject_code: cc_department.subject_code)
+      department.update_attributes(name: cc_department.name)
       department.save
 
-      DepartmentSyncJob.perform_later(department)
+      DepartmentSyncJob.perform_later(department.id, cc_department.to_json)
     end
   end
 
   private
 
-    def results
-      whitelist = [ "CS", "ECE", "ROB", "ENGR" ]
-      OsuCcScraper::University.new
+    def cc_departments
+      departments = OsuCcScraper::University.new
         .departments
-        .select { |d| whitelist.include?(d.subject_code) }
+        .select { |d| department_whitelist.include?(d.subject_code) }
     end
 
-    def department_params(row)
-      { name: row.name, subject_code: row.subject_code, }
+    def department_whitelist
+      [ "CS", "ECE", "ROB", "ENGR" ]
     end
+
 end

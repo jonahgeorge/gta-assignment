@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :experiences, -> { joins(:skill) }, foreign_key: "student_id"
   has_many :sections, foreign_key: "cc_instructor_tag", primary_key: "cc_instructor_tag"
 
+  scope :gtas, -> { students.where('fte > 0') }
   scope :students, -> { joins_sections.having('count(sections.id) = 0') }
   scope :instructors, -> { joins_sections.having('count(sections.id) > 0') }
   scope :joins_sections, -> {

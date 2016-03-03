@@ -32,7 +32,7 @@ class SectionPreferencesController < ApplicationController
   end
 
   def set_sections
-    @sections = Section.with_current_term
+    @sections = Section.includes(course: :department).with_current_term
   end
 
   def section_preference_params

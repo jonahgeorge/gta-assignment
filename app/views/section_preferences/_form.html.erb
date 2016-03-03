@@ -15,9 +15,14 @@
 
   <div class="form-group">
     <%= f.label :section_id, class: "control-label" %>
-    <%= f.select :section_id, @sections.collect { |s|
-        [ "#{s.course.label} #{s.course.name} (#{s.cc_instructor_tag})", s.id ]
-      }, {}, {class: "form-control"} %>
+    <%= f.select :section_id,
+      grouped_options_for_select(
+        @sections
+          .group_by { |s| s.course.department.subject_code }
+          .each { |_, ss|
+            ss.map! { |s| ["#{s.course.label} #{s.course.name} (#{s.cc_instructor_tag})", s.id] }.sort
+          }.sort),
+      {}, {class: "form-control"} %>
   </div>
 
   <div class="form-group">

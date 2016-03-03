@@ -6,7 +6,7 @@ class Section < ActiveRecord::Base
 
   scope :with_current_term, -> { where(term: Setting.current_term) }
 
-  validates_uniqueness_of :course_id, scope: [:instructor, :location]
+  validates_uniqueness_of :course_id, scope: [:instructor, :location, :term]
 
   belongs_to :instructor, class_name: "User",
     foreign_key: "cc_instructor_tag", primary_key: "cc_instructor_tag"
