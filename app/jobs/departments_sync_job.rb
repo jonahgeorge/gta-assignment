@@ -1,4 +1,4 @@
-class UniversitySyncJob < ActiveJob::Base
+class DepartmentsSyncJob < ActiveJob::Base
   queue_as :default
 
   def perform(*args)
@@ -7,7 +7,7 @@ class UniversitySyncJob < ActiveJob::Base
       department.update_attributes(name: cc_department.name)
       department.save
 
-      DepartmentSyncJob.perform_later(department.id, cc_department.to_json)
+      CoursesSyncJob.perform_later(department.id, cc_department.to_json)
     end
   end
 

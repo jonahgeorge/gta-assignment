@@ -1,4 +1,4 @@
-class CourseSyncJob < ActiveJob::Base
+class SectionsSyncJob < ActiveJob::Base
   queue_as :default
 
   def perform(course_id, cc_course_json)

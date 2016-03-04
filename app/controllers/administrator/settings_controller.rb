@@ -10,7 +10,7 @@ module Administrator
     end
 
     def synchronize
-      UniversitySyncJob.perform_later
+      DepartmentsSyncJob.perform_later
       redirect_to administrator_settings_path
     end
 
