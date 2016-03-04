@@ -1,5 +1,55 @@
 <div class="jumbotron">
   <h1>GtaAssignment</h1>
-  <p>The automated system for assigning teaching assistants to classes.</p>
-  <p><a class="btn btn-primary btn-md" href="/about" role="button">Learn more</a></p>
+  <p>The automated system for assigning graduate teaching assistants to classes.</p>
+  <a class="btn btn-primary btn-lg" href="/users/auth/google_oauth2" role="button">Sign In</a>
+</div>
+
+<div class="col-sm-9">
+  <h4>About</h4>
+
+  <p>
+    This is an OSU Computer Science Senior Design project based around the idea of
+    automating the process of selecting graduate teaching assistants (GTA) for classes.
+    Our goal is to save time for the faculty administrators and help both instructors and
+    GTAs get the assignments they want. Our application is currently still in beta,
+    so thank you ahead of time for helping iron out any issues.
+  </p>
+  <p>
+    If you happen to find a bug or have a suggestion, please don't hesistate to reach out.
+  </p>
+
+  <br>
+
+  <h4>Learn More</h4>
+  <p>
+    This project uses an Integer Linear Program (ILP) to optimally match GTAs to classes.
+    By adding GTA and Instructor preferences as factors in the objective function
+    and using required skills and GTA experience as constraints, we can find an optimal solution.
+  </p>
+
+  <p>
+    The interface that you are currently interacting with is a Ruby on Rails application
+    that is used for data entry and manipulating the ILP. To reduce the amount of manual data
+    entry, it automatically pulls data from ONID and the OSU Course Catalog.
+  </p>
+
+  <a href="https://github.com/jonahgeorge/gta-assignment">Source Code</a>
+</div>
+
+<div class="col-sm-3">
+  <h4>Team</h4>
+
+  <ul>
+    <li><a href="mailto:georgej@oregonstate.edu">Jonah George</a></li>
+    <li><a href="mailto:graysmar@oregonstate.edu">Ryan Graysmark</a></li>
+    <li><a href="mailto:vanzankr@oregonstate.edu">Kris Van Zandt</a></li>
+  </ul>
+
+  <br>
+
+  <h4>Customer</h4>
+
+  <ul>
+    <li><a href="http://web.engr.oregonstate.edu/~tadepall/">Prasad Tadepalli</a></li>
+  </ul>
 </div>

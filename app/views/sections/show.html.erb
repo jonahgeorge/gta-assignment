@@ -1,10 +1,21 @@
 <h2><%= @section.term %> <%= @section.course.name %></h2>
 
-<h4>Instructor Preferences</h4>
+<br>
 
+<h4>Student Preferences</h4>
+
+<p>
+  Student preferences are your chance to impact the likelihood of a student being
+  assigned as the GTA for your section.
+</p>
+
+<% if @section.student_preferences.empty? %>
+  <div class="well">No student preferences found.</div>
+<% else %>
 <div class="list-group">
   <%= render @section.student_preferences %>
 </div>
+<% end %>
 
 <%= link_to "New preference",
   new_section_student_preference_path(@section), { class: "btn btn-default" } %>
@@ -13,11 +24,20 @@
 <br>
 <br>
 
-<h4>Required Skills</h4>
+<h4>Requirements</h4>
 
+<p>
+  Requirements restrict which GTAs are eligible to be assigned to your course.
+  For the best results, be conservative and only assign skills that are <u>required</u> for your course.
+</p>
+
+<% if @section.course.requirements.empty? %>
+  <div class="well">No requirements found.</div>
+<% else %>
 <div class="list-group">
   <%= render @section.course.requirements %>
 </div>
+<% end %>
 
 <%= link_to "New requirement",
   new_section_requirement_path(@section), { class: "btn btn-default" } %>
@@ -26,9 +46,9 @@
 <br>
 <br>
 
-<h4>Students Who Prefer This Section</h4>
+<h4>Section Preferences (Students Who Prefer This Section)</h4>
 <% if @section.section_preferences.empty? %>
-  <div class="well">No preferences found.</div>
+  <div class="well">No section preferences found.</div>
 <% else %>
 <ul class="list-group">
   <% @section.section_preferences.each do |section_preference| %>

@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
 
   root 'pages#index'
-  get 'about' => 'pages#about'
 
   devise_for :users, :controllers => {
     :omniauth_callbacks => "users/omniauth_callbacks"
