@@ -1,7 +1,21 @@
 <div class="jumbotron">
   <h1>GtaAssignment</h1>
   <p>The automated system for assigning graduate teaching assistants to classes.</p>
-  <a class="btn btn-primary btn-lg" href="/users/auth/google_oauth2" role="button">Sign In</a>
+
+  <% if user_signed_in? %>
+    <% if current_user.is_instructor %>
+      <%= link_to "Sections", sections_path, class: "btn btn-primary" %>
+    <% end %>
+    <% if current_user.is_student %>
+      <%= link_to "Section Preferences", section_preferences_path, class: "btn btn-primary" %>
+      <%= link_to "Experience", experiences_path, class: "btn btn-primary" %>
+    <% end %>
+    <% if current_user.is_administrator %>
+      <%= link_to "Assignment", administrator_assignment_path, class: "btn btn-primary" %>
+    <% end %>
+  <% else %>
+    <a class="btn btn-primary" href="/users/auth/google_oauth2" role="button">Sign In</a>
+  <% end %>
 </div>
 
 <div class="col-sm-9">
