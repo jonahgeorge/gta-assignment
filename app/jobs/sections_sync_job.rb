@@ -22,9 +22,9 @@ class SectionsSyncJob < ActiveJob::Base
       # and keep running-sum of current_enrollment and max_enrollment
       cc_sections(cc_course).each do |cc_section|
 
-        section_tuple = find_section_by_tuple(
-          section_tuples, cc_section.instructor, course_id,
-          section_location(cc_section), cc_section.term)
+        section_tuple = find_section_by_tuple(section_tuples, cc_section.instructor, 
+                                              course_id, section_location(cc_section.campus), 
+                                              cc_section.term)
 
         if section_tuple
           section_tuple[:current_enrollment] += cc_section.current
@@ -33,7 +33,7 @@ class SectionsSyncJob < ActiveJob::Base
           section_tuples << {
             :cc_instructor_tag  => cc_section.instructor,
             :course_id          => course_id,
-            :location           => section_location(cc_section),
+            :location           => section_location(cc_section.campus),
             :term               => cc_section.term,
             :current_enrollment => cc_section.current,
             :max_enrollment     => cc_section.capacity,
@@ -46,7 +46,7 @@ class SectionsSyncJob < ActiveJob::Base
 
     def find_section_by_tuple(section_tuples, instructor, course_id, location, term)
       section_tuples.select { |section_tuple|
-        section_tuple[:instructor] == instructor &&
+        section_tuple[:cc_instructor_tag] == instructor &&
         section_tuple[:course_id] == course_id &&
         section_tuple[:location] == location &&
         section_tuple[:term] == term
@@ -63,8 +63,8 @@ class SectionsSyncJob < ActiveJob::Base
       [ "Corv", "Ecampus-Distance Education-LD", "Ecampus-Distance Education-UD" ]
     end
 
-    def section_location(cc_section)
-      (cc_section.campus == "Corv") ? "On campus" : "Ecampus"
+    def section_location(campus)
+      (campus == "Corv") ? "On campus" : "Ecampus"
     end
 
     def section_params(section_tuple)
