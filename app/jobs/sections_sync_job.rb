@@ -60,7 +60,7 @@ class SectionsSyncJob < ActiveJob::Base
     end
 
     def section_whitelist
-      [ "Corv", "Ecampus-Distance Education-LD" ]
+      [ "Corv", "Ecampus-Distance Education-LD", "Ecampus-Distance Education-UD" ]
     end
 
     def section_location(cc_section)
