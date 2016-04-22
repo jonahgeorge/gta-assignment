@@ -1,44 +1,49 @@
-<div class="alert alert-warning">This page is currently non-functional</div>
+<%= form_tag "/administrator/assignment", method: :post do %>
 
-<header>
-  <h2 style="display:inline-block;">Assignment</h2>
-  <div class="pull-right" style="margin-top: 20px;">
-    <%= link_to "Run new assignment",
-      administrator_assignment_path, class: "btn btn-primary" %>
-    <%= link_to "Revert to previous assignment",
-      administrator_assignment_path, class: "btn btn-warning" %>
-  </div>
-</header>
+  <header>
+    <h2 style="display:inline-block;">Assignment</h2>
+    <div class="pull-right" style="margin-top: 20px;">
+      <%= submit_tag "Run new assignment", class: "btn btn-primary" %>
+      <%#= link_to "Revert to previous assignment",
+        administrator_assignment_path, class: "btn btn-warning" %>
+    </div>
+  </header>
 
-<br>
+  <br>
 
-<div class="table-responsive">
-  <table class="table">
-    <tr>
-      <td></td>
-      <% @sections.each do |section| %>
-        <td>
-          <span style="white-space: nowrap;"><%= section.course.label %></span><br>
-          <span style="white-space: nowrap;"><%= section.cc_instructor_tag %></span>
-        </td>
-      <% end %>
-    </tr>
-
-    <% @students.each do |student| %>
+  <div class="table-responsive">
+    <table class="table">
       <tr>
-        <td>
-          <span style="white-space: nowrap;"><%= student.full_name %></span>
-        </td>
+        <td></td>
         <% @sections.each do |section| %>
           <td>
-            <select>
-              <option></option>
-              <option <%= ["selected='selected'", ""].sample %>>Set</option>
-            </select>
+            <span style="white-space: nowrap;"><%= section.course.label %></span><br>
+            <span style="white-space: nowrap;"><%= section.cc_instructor_tag %></span>
           </td>
         <% end %>
       </tr>
-    <% end %>
 
-  </table>
-</div>
+      <% @students.each do |student| %>
+        <tr>
+          <td>
+            <span style="white-space: nowrap;"><%= student.full_name %></span>
+          </td>
+          <% @sections.each do |section| %>
+            <td>
+              <select name="assignments[<%= student.id %>_<%= section.id %>]">
+                <option></option>
+                <% if @assignments["#{student.id}_#{section.id}"] %>
+                <option value="1" selected='selected' >Set</option>
+                <% else %>
+                <option value="1">Set</option>
+                <% end %>
+              </select>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+
+    </table>
+  </div>
+
+<% end %>
