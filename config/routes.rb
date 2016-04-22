@@ -29,7 +29,9 @@ Rails.application.routes.draw do
     get 'settings/section_preferences' => 'settings#section_preferences'
     get 'settings/student_preferences' => 'settings#student_preferences'
     get 'assignment' => 'assignment#index'
-    post 'assignment' => 'assignment#run'
+    post 'assignment' => 'assignment#index'
+    post 'assignment/export' => 'assignment#export'
+
   end
 
   match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]

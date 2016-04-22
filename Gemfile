@@ -2,10 +2,10 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.2.0'
 gem 'pg'
+
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-# gem 'rulp', require: false, git: "git@github.com:wouterken/rulp.git"
-gem 'rulp', require: false, :path => "~/Workspace/rulp"
+gem 'rulp', require: false, git: "git@github.com:wouterken/rulp.git"
 gem 'osu-cc-scraper', '~> 4.0.0'
 gem 'axlsx_rails'
 gem "rails-settings-cached", "~> 0.4.0"
@@ -35,12 +35,10 @@ gem 'rails_12factor', group: :production
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
-  gem 'dotenv-rails'
-  gem 'pry-rails'
+  gem 'dotenv-rails', '~> 2.0.2'
+  # gem 'pry-rails'
 end
 
 group :development do
-  gem 'byebug'
-  gem 'web-console', '~> 2.0'
   gem 'spring'
 end

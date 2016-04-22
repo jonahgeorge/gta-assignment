@@ -3,16 +3,15 @@
   <header>
     <h2 style="display:inline-block;">Assignment</h2>
     <div class="pull-right" style="margin-top: 20px;">
-      <%= submit_tag "Run new assignment", class: "btn btn-primary" %>
-      <%#= link_to "Revert to previous assignment",
-        administrator_assignment_path, class: "btn btn-warning" %>
+      <%= submit_tag "Run assignment", class: "btn btn-primary" %>
+      <%= submit_tag "Export to pdf", class: "btn btn-success" %>
     </div>
   </header>
 
   <br>
 
   <div class="table-responsive">
-    <table class="table">
+    <table class="table table-sm table-striped">
       <tr>
         <td></td>
         <% @sections.each do |section| %>
@@ -32,10 +31,23 @@
             <td>
               <select name="assignments[<%= student.id %>_<%= section.id %>]">
                 <option></option>
-                <% if @assignments["#{student.id}_#{section.id}"] %>
-                <option value="1" selected='selected' >Set</option>
+
+                <% if @assignments[:"#{student.id}_#{section.id}"] == "Yes" %>
+                  <option value="Yes" selected>Yes</option>
                 <% else %>
-                <option value="1">Set</option>
+                  <option value="Yes">Yes</option>
+                <% end %>
+
+                <% if @assignments[:"#{student.id}_#{section.id}"] == "Maybe" %>
+                  <option value="Maybe" selected>Maybe</option>
+                <% else %>
+                  <option value="Maybe">Maybe</option>
+                <% end %>
+
+                <% if @assignments[:"#{student.id}_#{section.id}"] == "No" %>
+                  <option value="No" selected>No</option>
+                <% else %>
+                  <option value="No">No</option>
                 <% end %>
               </select>
             </td>
