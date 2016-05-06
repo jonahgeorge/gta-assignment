@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_many :sections, foreign_key: "cc_instructor_tag", primary_key: "cc_instructor_tag"
 
   scope :gtas, -> { students.where('fte > 0') }
-  scope :students, -> { joins_sections.having('count(sections.id) = 0') }
+  scope :students, -> { joins_sections.having('count(sections.id) = 0').where("fte > 0") }
   scope :instructors, -> { joins_sections.having('count(sections.id) > 0') }
   scope :joins_sections, -> {
     joins('LEFT JOIN "sections" ON "sections"."cc_instructor_tag" = "users"."cc_instructor_tag"')
