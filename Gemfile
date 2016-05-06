@@ -5,7 +5,7 @@ gem 'pg'
 
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-gem 'rulp', require: false, git: "git@github.com:wouterken/rulp.git"
+gem 'rulp', require: false, git: "https://github.com/wouterken/rulp.git", branch: "master"
 gem 'osu-cc-scraper', '~> 4.0.0'
 gem 'axlsx_rails'
 gem "rails-settings-cached", "~> 0.4.0"

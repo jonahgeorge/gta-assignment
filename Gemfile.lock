@@ -1,6 +1,7 @@
 GIT
-  remote: git@github.com:wouterken/rulp.git
+  remote: https://github.com/wouterken/rulp.git
   revision: 89f4502d8c28c7da843fbcca5cdb6ef15516abd8
+  branch: master
   specs:
     rulp (0.0.27)
 
