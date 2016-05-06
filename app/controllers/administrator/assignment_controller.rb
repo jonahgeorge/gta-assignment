@@ -11,9 +11,14 @@ module Administrator
       if params[:commit] == "Export to pdf"
         render xlsx: 'index.xlsx.axlsx'
       else
-        problem = ::IntegerLinearProgram.new(@students, @sections, params[:assignments])
-        problem.solve
-        @assignments = problem.results
+        begin
+          problem = ::IntegerLinearProgram.new(@students, @sections, params[:assignments])
+          problem.solve
+          @assignments = problem.results
+        rescue
+          @assignments = params[:assignments]
+          flash[:danger] = "Solution infeasible"
+        end
       end
     end
 
