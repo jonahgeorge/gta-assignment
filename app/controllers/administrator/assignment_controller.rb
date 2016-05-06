@@ -17,7 +17,7 @@ module Administrator
           @assignments = problem.results
         rescue
           @assignments = params[:assignments]
-          flash[:danger] = "Solution infeasible"
+          flash[:notice] = "Solution infeasible"
         end
       end
     end
