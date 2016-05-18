@@ -7,16 +7,20 @@ class User < ActiveRecord::Base
 
   has_many :student_preferences, foreign_key: "instructor_id"
   has_many :section_preferences, foreign_key: "student_id"
-  has_many :experiences, -> { joins(:skill) }, foreign_key: "student_id"
+  has_many :experiences, ->{ joins(:skill) }, foreign_key: "student_id"
   has_many :sections, foreign_key: "cc_instructor_tag", primary_key: "cc_instructor_tag"
 
-  scope :gtas, -> { students.where('fte > 0') }
-  scope :students, -> { joins_sections.having('count(sections.id) = 0').where("fte > 0") }
-  scope :instructors, -> { joins_sections.having('count(sections.id) > 0') }
-  scope :joins_sections, -> {
-    joins('LEFT JOIN "sections" ON "sections"."cc_instructor_tag" = "users"."cc_instructor_tag"')
-    .group('users.id')
-  }
+  def self.instructors
+    where(cc_instructor_tag: Section.select(:cc_instructor_tag).with_current_term)
+  end
+
+  def self.students
+    where.not(cc_instructor_tag: Section.select(:cc_instructor_tag).with_current_term)
+  end
+
+  def self.gtas
+    students.where('fte > 0')
+  end
 
   def self.from_omniauth(access_token)
     data = access_token.info
@@ -37,11 +41,11 @@ class User < ActiveRecord::Base
   end
 
   def is_student
-    self.sections.length == 0
+    self.sections.with_current_term.length == 0
   end
 
   def is_instructor
-    self.sections.length > 0
+    self.sections.with_current_term.length > 0
   end
 
   def role
