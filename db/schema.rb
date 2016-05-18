@@ -40,6 +40,12 @@ ActiveRecord::Schema.define(version: 20160519224611) do
     t.integer "value"
   end
 
+  create_table "problems", force: :cascade do |t|
+    t.jsonb    "assignments", default: {}, null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
   create_table "requirements", force: :cascade do |t|
     t.integer "course_id",     null: false
     t.integer "skill_id",      null: false

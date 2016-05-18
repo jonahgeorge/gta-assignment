@@ -1,0 +1,7 @@
+<ul>
+  <% @assignments.each do |assignment| %>
+    <li>
+      <%= link_to assignment.created_at, administrator_assignment_path(assignment) %>  
+    </li>
+  <% end %>
+</ul>
