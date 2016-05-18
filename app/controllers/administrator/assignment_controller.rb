@@ -4,7 +4,7 @@ module Administrator
   class AssignmentController < BaseController
 
     def index
-      @students = User.includes([{section_preferences: :section}, :experiences]).students
+      @students = User.includes([{section_preferences: :section}, :experiences]).gtas
       @sections = Section.includes([{course: [:requirements, :department]}, {instructor: :student_preferences}, :section_preferences]).with_current_term
       @assignments = params[:assignments]
 
