@@ -1,27 +1,30 @@
-class CoursesSyncJob < ActiveJob::Base
-  queue_as :default
+require "course_catalog/sections_syncer"
 
-  def perform(department_id, cc_department_json)
+class CoursesSyncer
+  def self.perform(department_id, cc_department_json)
     cc_department = OsuCcScraper::Department.from_json(cc_department_json)
 
     cc_courses(cc_department).each do |cc_course|
-      course = Course.find_or_create_by(department_id: department_id, course_number: cc_course.course_number)
-      course.update_attributes(name: cc_course.name)
+      course = Course.create({
+        :department_id => department_id, 
+        :course_number => cc_course.course_number,
+        :name          => cc_course.name
+      })
       course.save
 
-      SectionsSyncJob.perform_later(course.id, cc_course.to_json)
+      SectionsSyncer.perform(course.id, cc_course.to_json)
     end
   end
 
   private
 
-    def cc_courses(cc_department)
+    def self.cc_courses(cc_department)
       cc_department.courses.select { |c|
         course_whitelist.include?("#{cc_department.subject_code} #{c.course_number}")
       }
     end
 
-    def course_whitelist
+    def self.course_whitelist
       [
         "CS 225", "CS 225", "CS 225", "CS 261", "CS 261", "CS 271", "CS 290", "CS 295",
         "CS 325", "CS 331", "CS 340", "CS 340", "CS 344", "CS 352", "CS 361", "CS 362",

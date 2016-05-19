@@ -9,11 +9,6 @@ module Administrator
       redirect_to administrator_settings_path
     end
 
-    def synchronize
-      DepartmentsSyncJob.perform_later
-      redirect_to administrator_settings_path
-    end
-
     def section_preferences
       @students = User.gtas
       @sections = Section.includes(:section_preferences).with_current_term

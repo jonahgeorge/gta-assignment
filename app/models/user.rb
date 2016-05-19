@@ -36,6 +36,13 @@ class User < ActiveRecord::Base
     user
   end
 
+  def composite_sections
+    self.sections
+      .select("course_id, cc_instructor_tag, location, term, SUM(current_enrollment) as current_enrollment, SUM(max_enrollment) as max_enrollment") 
+      .with_current_term
+      .group("course_id, cc_instructor_tag, location, term")
+  end
+
   def full_name
     "#{first_name} #{last_name}"
   end
