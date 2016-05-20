@@ -1,61 +1,51 @@
-<%= form_tag "/administrator/assignment", method: :post do %>
+<%= link_to "&larr; Back to Assignments".html_safe, administrator_assignments_path %>
 
-  <header>
-    <h2 style="display:inline-block;">Assignment</h2>
-    <div class="pull-right" style="margin-top: 20px;">
-      <%= submit_tag "Run assignment", class: "btn btn-primary" %>
-      <%= submit_tag "Export to pdf", class: "btn btn-success" %>
-    </div>
-  </header>
+<h2>Assignment #<%= @assignment.id %></h2>
 
-  <br>
+<%= link_to "Edit", edit_administrator_assignment_path(@assignment),
+  class: "btn btn-default btn-warning" %>
+<%= link_to "Export to Plaintext", administrator_assignment_path(@assignment, format: "txt"),
+  class: "btn btn-default btn-success" %>
+<%= link_to "Export to Excel", administrator_assignment_path(@assignment, format: "xlsx"),
+  class: "btn btn-default btn-success" %>
 
-  <div class="table-responsive">
-    <table class="table table-sm table-striped">
+<br>
+<br>
+
+<div class="table-responsive">
+  <table class="table table-sm table-striped">
+    <tr>
+      <td></td>
+      <% @sections.each do |section| %>
+        <td>
+          <span style="white-space: nowrap;"><%= section.course.label %></span><br>
+          <span style="white-space: nowrap;"><%= section.cc_instructor_tag %></span>
+        </td>
+      <% end %>
+    </tr>
+
+    <% @students.each do |student| %>
       <tr>
-        <td></td>
+        <td>
+          <span style="white-space: nowrap;"><%= student.full_name %></span>
+        </td>
         <% @sections.each do |section| %>
           <td>
-            <span style="white-space: nowrap;"><%= section.course.label %></span><br>
-            <span style="white-space: nowrap;"><%= section.cc_instructor_tag %></span>
+            <% if @pairs["#{student.id}_#{section.id}"] == "Yes" %>
+              Yes
+            <% end %>
+
+            <% if @pairs["#{student.id}_#{section.id}"] == "Maybe" %>
+              Maybe
+            <% end %>
+
+            <% if @pairs["#{student.id}_#{section.id}"] == "No" %>
+              No
+            <% end %>
           </td>
         <% end %>
       </tr>
+    <% end %>
 
-      <% @students.each do |student| %>
-        <tr>
-          <td>
-            <span style="white-space: nowrap;"><%= student.full_name %></span>
-          </td>
-          <% @sections.each do |section| %>
-            <td>
-              <select name="assignments[<%= student.id %>_<%= section.id %>]">
-                <option></option>
-
-                <% if @pairs["#{student.id}_#{section.id}"] == "Yes" %>
-                  <option value="Yes" selected>Yes</option>
-                <% else %>
-                  <option value="Yes">Yes</option>
-                <% end %>
-
-                <% if @pairs["#{student.id}_#{section.id}"] == "Maybe" %>
-                  <option value="Maybe" selected>Maybe</option>
-                <% else %>
-                  <option value="Maybe">Maybe</option>
-                <% end %>
-
-                <% if @pairs["#{student.id}_#{section.id}"] == "No" %>
-                  <option value="No" selected>No</option>
-                <% else %>
-                  <option value="No">No</option>
-                <% end %>
-              </select>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
-
-    </table>
-  </div>
-
-<% end %>
+  </table>
+</div>

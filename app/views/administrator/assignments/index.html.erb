@@ -1,7 +1,21 @@
-<ul>
+<h2>Assignments</h2>
+
+<%= link_to "Create new assignment", new_administrator_assignment_path, class: "btn btn-success" %>
+
+<br>
+<br>
+
+<table class="table table-striped">
+  <thead>
+    <th>Id</th>
+    <th>Date</th>
+    <th>Author</th>
+  </thead>
   <% @assignments.each do |assignment| %>
-    <li>
-      <%= link_to assignment.created_at, administrator_assignment_path(assignment) %>  
-    </li>
+    <tr>
+      <td><%= link_to "Assignment ##{assignment.id}", administrator_assignment_path(assignment) %></td>
+      <td><%= assignment.updated_at.to_s(:short) %></td>
+      <td>Jonah George</td>
+    </tr>
   <% end %>
-</ul>
+</table>
