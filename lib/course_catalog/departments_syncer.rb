@@ -1,25 +1,25 @@
-class DepartmentsSyncJob < ActiveJob::Base
-  queue_as :default
+require "course_catalog/courses_syncer"
 
-  def perform(*args)
+class DepartmentsSyncer
+  def self.perform(*args)
     cc_departments.each do |cc_department|
       department = Department.find_or_create_by(subject_code: cc_department.subject_code)
       department.update_attributes(name: cc_department.name)
       department.save
 
-      CoursesSyncJob.perform_later(department.id, cc_department.to_json)
+      CoursesSyncer.perform(department.id, cc_department.to_json)
     end
   end
 
   private
 
-    def cc_departments
+    def self.cc_departments
       departments = OsuCcScraper::University.new
         .departments
         .select { |d| department_whitelist.include?(d.subject_code) }
     end
 
-    def department_whitelist
+    def self.department_whitelist
       [ "CS", "ECE", "ROB", "ENGR" ]
     end
 

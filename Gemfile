@@ -10,11 +10,6 @@ gem 'osu-cc-scraper', '~> 4.0.0'
 gem 'axlsx_rails'
 gem "rails-settings-cached", "~> 0.4.0"
 
-# Background Jobs
-gem 'delayed_job'
-gem 'delayed_job_active_record'
-gem 'delayed_job_web'
-
 # CSS/Sass
 gem 'sass-rails', '~> 5.0'
 gem 'bootstrap-sass'
