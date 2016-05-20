@@ -3,7 +3,8 @@ class SectionsSyncer
     cc_course = OsuCcScraper::Course.from_json(cc_course_json)
 
     cc_sections(cc_course).each do |cc_section|
-      section = Section.create({
+      section = Section.find_or_create_by(crn: cc_section.crn)
+      section.update_attributes({
         :cc_instructor_tag  => cc_section.instructor,
         :course_id          => course_id,
         :location           => section_location(cc_section.campus),

@@ -3,10 +3,8 @@ require "course_catalog/courses_syncer"
 class DepartmentsSyncer
   def self.perform(*args)
     cc_departments.each do |cc_department|
-      department = Department.create({
-        :subject_code => cc_department.subject_code,
-        :name         => cc_department.name,
-      })
+      department = Department.find_or_create_by(subject_code: cc_department.subject_code)
+      department.update_attributes(name: cc_department.name)
       department.save
 
       CoursesSyncer.perform(department.id, cc_department.to_json)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160519013023) do
+ActiveRecord::Schema.define(version: 20160519224611) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,12 +38,6 @@ ActiveRecord::Schema.define(version: 20160519013023) do
     t.integer "student_id", null: false
     t.integer "skill_id",   null: false
     t.integer "value"
-  end
-
-  create_table "problems", force: :cascade do |t|
-    t.jsonb    "assignments", default: {}, null: false
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
   end
 
   create_table "requirements", force: :cascade do |t|
@@ -73,6 +67,7 @@ ActiveRecord::Schema.define(version: 20160519013023) do
     t.string   "section"
     t.string   "type"
     t.string   "status"
+    t.integer  "crn"
   end
 
   add_index "sections", ["course_id"], name: "index_sections_on_course_id", using: :btree
