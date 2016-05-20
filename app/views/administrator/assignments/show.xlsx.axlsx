@@ -2,12 +2,12 @@ wb = xlsx_package.workbook
 wb.add_worksheet(name: "Assignments") do |sheet|
 
   sheet.add_row [""] + @sections.map { |section|
-    "#{section.course.label} (#{section.cc_instructor_tag})"
+    "#{section.course.label}-#{section.section} (#{section.cc_instructor_tag})"
   }
 
   @students.each do |student|
     sheet.add_row [ student.full_name ] + @sections.map { |section|
-      @assignments["#{student.id}_#{section.id}"]
+      @pairs["#{student.id}_#{section.id}"]
     }
   end
 end
