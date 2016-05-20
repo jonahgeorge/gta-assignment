@@ -38,18 +38,6 @@ class IntegerLinearProgram
     results
   end
 
-  def print_results
-    @students.each do |student|
-      puts student.full_name
-      @sections.each do |section|
-        if VAR_b(student.id, section.id).value
-          puts "\t #{section.course.label} #{section.location}"
-        end
-      end
-      puts
-    end
-  end
-
   private
 
   def objective

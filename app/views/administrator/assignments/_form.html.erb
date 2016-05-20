@@ -1,13 +1,9 @@
-<%= form_tag "/administrator/assignment", method: :post do %>
+<%= form_for [:administrator, @assignment] do |f| %>
 
-  <header>
-    <h2 style="display:inline-block;">Assignment</h2>
-    <div class="pull-right" style="margin-top: 20px;">
-      <%= submit_tag "Run assignment", class: "btn btn-primary" %>
-      <%= submit_tag "Export to pdf", class: "btn btn-success" %>
-    </div>
-  </header>
+  <%= f.submit "Run solver", class: "btn btn-warning" %>
+  <%= f.submit "Save", class: "btn btn-success" %>
 
+  <br>
   <br>
 
   <div class="table-responsive">
@@ -16,8 +12,9 @@
         <td></td>
         <% @sections.each do |section| %>
           <td>
-            <span style="white-space: nowrap;"><%= section.course.label %></span><br>
-            <span style="white-space: nowrap;"><%= section.cc_instructor_tag %></span>
+            <span style="white-space: nowrap;"><%= section.course.label %>-<%= section.section %></span><br>
+            <span style="white-space: nowrap;"><%= section.cc_instructor_tag %></span><br>
+            <span style="white-space: nowrap;"><%= section.current_enrollment %> / <%= section.max_enrollment %></span>
           </td>
         <% end %>
       </tr>
@@ -32,19 +29,19 @@
               <select name="assignments[<%= student.id %>_<%= section.id %>]">
                 <option></option>
 
-                <% if @assignments[:"#{student.id}_#{section.id}"] == "Yes" %>
+                <% if @pairs["#{student.id}_#{section.id}"] == "Yes" %>
                   <option value="Yes" selected>Yes</option>
                 <% else %>
                   <option value="Yes">Yes</option>
                 <% end %>
 
-                <% if @assignments[:"#{student.id}_#{section.id}"] == "Maybe" %>
+                <% if @pairs["#{student.id}_#{section.id}"] == "Maybe" %>
                   <option value="Maybe" selected>Maybe</option>
                 <% else %>
                   <option value="Maybe">Maybe</option>
                 <% end %>
 
-                <% if @assignments[:"#{student.id}_#{section.id}"] == "No" %>
+                <% if @pairs["#{student.id}_#{section.id}"] == "No" %>
                   <option value="No" selected>No</option>
                 <% else %>
                   <option value="No">No</option>
@@ -57,5 +54,4 @@
 
     </table>
   </div>
-
 <% end %>

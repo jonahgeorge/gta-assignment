@@ -23,12 +23,11 @@ Rails.application.routes.draw do
     resources :courses
     resources :sections
     resources :users
+    resources :assignments
+
     get 'settings' => 'settings#index'
     post 'settings/current_term' => 'settings#set_current_term'
     get 'settings/section_preferences' => 'settings#section_preferences'
     get 'settings/student_preferences' => 'settings#student_preferences'
-    get 'assignment' => 'assignment#index'
-    post 'assignment' => 'assignment#index'
-    post 'assignment/export' => 'assignment#export'
   end
 end

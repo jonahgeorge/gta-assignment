@@ -1,0 +1,144 @@
+Seeding data...
+Fetching data...
+Running solver...
+Sherif Abdelwahab
+	 CS 372 Ecampus
+
+Keying Xu
+	 CS 225 Ecampus
+
+Xiangyu Wang
+	 CS 271 Ecampus
+
+Xu Xu
+	 CS 225 Ecampus
+
+Zahra Iman
+	 CS 352 Ecampus
+
+Pranjal Mittal
+	 CS 496 Ecampus
+
+Prashant Kumar
+	 CS 325 Ecampus
+
+Nels Oscar
+	 CS 463 On campus
+
+Hui Zhang
+	 CS 271 Ecampus
+
+Chao Peng
+	 CS 381 On campus
+
+Mohammad Reza Ghaeini
+	 CS 340 Ecampus
+
+Caius Brindescu
+	 CS 362 Ecampus
+
+Ritesh Sharma
+	 CS 340 Ecampus
+
+Jun He
+	 CS 290 Ecampus
+
+Wojtec Rajski
+	 CS 391 Ecampus
+
+Zhangxiang Hu
+	 CS 372 Ecampus
+
+Fan Yang
+	 CS 325 Ecampus
+
+Laxmi Ganesan
+	 CS 352 Ecampus
+
+Nitin Subramanian
+	 CS 361 Ecampus
+
+Spencer Hubbard
+	 CS 290 Ecampus
+
+Jonathan Dodge
+	 CS 463 On campus
+
+Hamed Shahbazi
+	 CS 434 On campus
+
+Rasha Obeidat
+	 CS 261 Ecampus
+
+Shankar Jothi
+	 CS 391 Ecampus
+
+Khalfi Bassem
+	 CS 391 On campus
+
+Yao Zhou
+	 CS 261 Ecampus
+
+Hongyan Yi
+	 CS 271 Ecampus
+
+Farhana Liza
+	 CS 361 Ecampus
+
+Keeley Abbott
+	 CS 381 On campus
+
+Pingan Zhu
+	 CS 419 Ecampus
+
+Tadesse Zemicheal
+	 CS 344 Ecampus
+
+Xingyi Li
+	 CS 225 Ecampus
+
+Shane Mc Kee
+	 CS 290 Ecampus
+
+Guochen Xu
+	 CS 261 Ecampus
+
+Baigong Zheng
+	 CS 517 On campus
+
+Sean Moore
+	 CS 225 Ecampus
+
+Umme Mannan
+	 CS 352 Ecampus
+
+Xin Liu
+	 CS 381 On campus
+
+Peter Rindal
+	 CS 325 Ecampus
+
+Eric Happe
+	 CS 344 Ecampus
+
+Xinze Guan
+	 CS 463 On campus
+
+Dileep Sreekumaran
+	 CS 225 Ecampus
+
+Sumanth Avadhani
+	 CS 271 Ecampus
+
+Siddharth Mahendra
+	 CS 271 Ecampus
+
+Rithika Naik
+	 CS 290 Ecampus
+
+Jeffrey Juozapaitis
+	 CS 331 On campus
+
+Arezoo Rajabi
+	 CS 261 Ecampus
+
