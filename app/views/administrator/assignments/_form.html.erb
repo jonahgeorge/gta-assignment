@@ -12,10 +12,8 @@
         <td></td>
         <% @sections.each do |section| %>
           <td>
-            <span style="white-space: nowrap;"><%= section.course.label %>-<%= section.section %></span>
-            <br>
-            <span style="white-space: nowrap;"><%= section.cc_instructor_tag %></span>
-            <br>
+            <span style="white-space: nowrap;"><%= section.course.label %>-<%= section.section %></span><br>
+            <span style="white-space: nowrap;"><%= section.cc_instructor_tag %></span><br>
             <span style="white-space: nowrap;"><%= section.current_enrollment %> / <%= section.max_enrollment %></span>
           </td>
         <% end %>

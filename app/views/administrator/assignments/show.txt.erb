@@ -1,7 +1,7 @@
 <% @students.each do |student| %>
   <%= student.full_name %>
   <% @sections.each do |section| %>
-    <% if @pairs["#{student.id}_#{section.id}"] == "Yes" %>
+    <% if @pairs["#{student.id}_#{section.id}"].in?(["Yes", "Maybe"]) %>
       <%= "\t #{section.course.label}-#{section.section}" %>
     <% end %>
   <% end %>
