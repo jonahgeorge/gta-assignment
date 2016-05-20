@@ -9,13 +9,13 @@
   <thead>
     <th>Id</th>
     <th>Date</th>
-    <th>Author</th>
+    <!-- <th>Author</th> -->
   </thead>
   <% @assignments.each do |assignment| %>
     <tr>
       <td><%= link_to "Assignment ##{assignment.id}", administrator_assignment_path(assignment) %></td>
       <td><%= assignment.updated_at.to_s(:short) %></td>
-      <td>Jonah George</td>
+      <!-- <td>Jonah George</td> -->
     </tr>
   <% end %>
 </table>
