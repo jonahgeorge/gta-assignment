@@ -23,9 +23,14 @@ module Administrator
       if params[:commit] == "Save"
         @pairs = params[:assignments] || {}
       elsif params[:commit] == "Run solver"
-        problem = ::IntegerLinearProgram.new(@students, @sections, params[:assignments])
-        problem.solve
-        @pairs = problem.results
+        begin
+          problem = ::IntegerLinearProgram.new(@students, @sections, params[:assignments])
+          problem.solve
+          @pairs = problem.results
+        rescue RuntimeError
+          flash[:alert] = "Infeasible solution"
+          @pairs = params[:assignments] || {}
+        end
       end
 
       @assignment = Assignment.create(assignments: @pairs)
@@ -36,9 +41,14 @@ module Administrator
       if params[:commit] == "Save"
         @pairs = params[:assignments] || {}
       elsif params[:commit] == "Run solver"
-        problem = ::IntegerLinearProgram.new(@students, @sections, params[:assignments])
-        problem.solve
-        @pairs = problem.results
+        begin
+          problem = ::IntegerLinearProgram.new(@students, @sections, params[:assignments])
+          problem.solve
+          @pairs = problem.results
+        rescue RuntimeError
+          flash[:alert] = "Infeasible solution"
+          @pairs = params[:assignments] || {}
+        end
       end
 
       @assignment = Assignment.create(assignments: @pairs)
