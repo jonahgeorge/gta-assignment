@@ -137,8 +137,8 @@ private
   def fixed_assignments_constraint
     self.assignments_is_fixed.each do |key, value|
       student_id, section_id = key.split("_")
-      self.problem[ VAR_f(student_id, section_id) <= self.assignments_fte["#{student_id}_#{section_id}"] ]
-      self.problem[ VAR_f(student_id, section_id) >= self.assignments_fte["#{student_id}_#{section_id}"] ]
+      self.problem[ VAR_f(student_id, section_id) <= self.assignments_fte["#{student_id}_#{section_id}"].to_f ]
+      self.problem[ VAR_f(student_id, section_id) >= self.assignments_fte["#{student_id}_#{section_id}"].to_f ]
     end
   end
 

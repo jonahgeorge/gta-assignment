@@ -32,7 +32,7 @@
         </td>
         <% @sections.each do |section| %>
           <td>
-            <% if @assignments_fte["#{student.id}_#{section.id}"] > 0 %>
+            <% if @assignments_fte["#{student.id}_#{section.id}"].to_f > 0 %>
               <b><%= @assignments_fte["#{student.id}_#{section.id}"] %></b>
             <% end %>
           </td>
