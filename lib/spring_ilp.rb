@@ -14,19 +14,26 @@ class SpringIlp
 
   def run
     puts "Fetching data..."
-    students = User.joins(:section_preferences).students
-    sections = Section.joins(course: :department).all
+    # students = User.joins(:section_preferences).gtas
+    # sections = Section.joins(course: :department).all
+
+    students = User.includes([{section_preferences: :section}, :experiences]).gtas
+    sections = Section.includes(
+      {course: [:requirements, :department]},
+      {instructor: :student_preferences}, :section_preferences)
+      .with_current_term
 
     puts "Running solver..."
     problem = IntegerLinearProgram.new(students, sections)
     problem.solve
+    puts problem.inspect
     problem.print_results
   end
 
 private
 
   def seed_instructors
-    @instructor = User.create! first_name: 'John', last_name: 'Doe', email: 'instructor@oregonstate.edu'
+    @instructor = User.create first_name: 'John', last_name: 'Doe', email: 'instructor@oregonstate.edu'
 
     @zhang = User.create! first_name: "Eugene", last_name: "Zhang", email: "zhang@oregonstate.edu"
     @ehsan = User.create! first_name: "Not Present", last_name: "Ehsan", email: "ehsan@oregonstate.edu"
@@ -115,92 +122,92 @@ private
   end
 
   def seed_sections
-    @section_225E = Section.create! current_enrollment: 170, location: 1,   term: 'Sp16', instructor: @instructor, course: @course_225
-    @section_261 = Section.create! current_enrollment: 100, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_261
-    @section_261E = Section.create! current_enrollment: 146, location: 1,   term: 'Sp16', instructor: @instructor, course: @course_261
-    @section_271E = Section.create! current_enrollment: 161, location: 1,   term: 'Sp16', instructor: @instructor, course: @course_271
-    @section_290E = Section.create! current_enrollment: 135, location: 1,   term: 'Sp16', instructor: @instructor, course: @course_290
-    @section_325E = Section.create! current_enrollment: 91, location: 1,   term: 'Sp16', instructor: @instructor, course: @course_325
-    @section_331 = Section.create! current_enrollment: 39, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_331
-    @section_340E = Section.create! current_enrollment: 68, location: 1,   term: 'Sp16', instructor: @instructor, course: @course_340
-    @section_340 = Section.create! current_enrollment: 11, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_340
-    @section_344E = Section.create! current_enrollment: 84, location: 1,   term: 'Sp16', instructor: @instructor, course: @course_344
-    @section_352E = Section.create! current_enrollment: 115, location: 1,   term: 'Sp16', instructor: @instructor, course: @course_352
-    @section_361E = Section.create! current_enrollment: 67, location: 1,   term: 'Sp16', instructor: @instructor, course: @course_361
-    @section_362E = Section.create! current_enrollment: 48, location: 1,   term: 'Sp16', instructor: @instructor, course: @course_362
-    @section_362 = Section.create! current_enrollment: 50, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_362
-    @section_372E = Section.create! current_enrollment: 61, location: 1,   term: 'Sp16', instructor: @instructor, course: @course_372
-    @section_372 = Section.create! current_enrollment: 107, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_372
-    @section_381 = Section.create! current_enrollment: 106, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_381
-    @section_391E = Section.create! current_enrollment: 75, location: 1,   term: 'Sp16', instructor: @instructor, course: @course_391
-    @section_391 = Section.create! current_enrollment: 127, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_391
-    @section_419E = Section.create! current_enrollment: 34, location: 1,   term: 'Sp16', instructor: @instructor, course: @course_419
-    @section_419_553 = Section.create! current_enrollment: 46, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_419_553
-    @section_434 = Section.create! current_enrollment: 30, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_434
-    @section_444_544 = Section.create! current_enrollment: 115, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_444_544
-    @section_463 = Section.create! current_enrollment: 124, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_463
-    @section_472_572 = Section.create! current_enrollment: 149, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_472_572
-    @section_475_575 = Section.create! current_enrollment: 76, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_475_575
-    @section_496E = Section.create! current_enrollment: 53, location: 1,   term: 'Sp16', instructor: @instructor, course: @course_496
-    @section_496 = Section.create! current_enrollment: 43, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_496
-    @section_516 = Section.create! current_enrollment: 13, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_516
-    @section_517 = Section.create! current_enrollment: 48, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_517
-    @section_519_599 = Section.create! current_enrollment: 9, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_519_599
-    @section_533 = Section.create! current_enrollment: 24, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_533
-    @section_421_521 = Section.create! current_enrollment: 53, location: 0,   term: 'Sp16', instructor: @instructor, course: @course_421_521
+    @section_225E = Section.create! current_enrollment: 170, location: 1,   term: 'Sp16', course: @course_225, cc_instructor_tag: "Something else"
+    @section_261 = Section.create! current_enrollment: 100, location: 0,   term: 'Sp16', course: @course_261, cc_instructor_tag: "Something else"
+    @section_261E = Section.create! current_enrollment: 146, location: 1,   term: 'Sp16', course: @course_261, cc_instructor_tag: "Something else"
+    @section_271E = Section.create! current_enrollment: 161, location: 1,   term: 'Sp16', course: @course_271, cc_instructor_tag: "Something else"
+    @section_290E = Section.create! current_enrollment: 135, location: 1,   term: 'Sp16', course: @course_290, cc_instructor_tag: "Something else"
+    @section_325E = Section.create! current_enrollment: 91, location: 1,   term: 'Sp16', course: @course_325, cc_instructor_tag: "Something else"
+    @section_331 = Section.create! current_enrollment: 39, location: 0,   term: 'Sp16', course: @course_331, cc_instructor_tag: "Something else"
+    @section_340E = Section.create! current_enrollment: 68, location: 1,   term: 'Sp16', course: @course_340, cc_instructor_tag: "Something else"
+    @section_340 = Section.create! current_enrollment: 11, location: 0,   term: 'Sp16', course: @course_340, cc_instructor_tag: "Something else"
+    @section_344E = Section.create! current_enrollment: 84, location: 1,   term: 'Sp16', course: @course_344, cc_instructor_tag: "Something else"
+    @section_352E = Section.create! current_enrollment: 115, location: 1,   term: 'Sp16', course: @course_352, cc_instructor_tag: "Something else"
+    @section_361E = Section.create! current_enrollment: 67, location: 1,   term: 'Sp16', course: @course_361, cc_instructor_tag: "Something else"
+    @section_362E = Section.create! current_enrollment: 48, location: 1,   term: 'Sp16', course: @course_362, cc_instructor_tag: "Something else"
+    @section_362 = Section.create! current_enrollment: 50, location: 0,   term: 'Sp16', course: @course_362, cc_instructor_tag: "Something else"
+    @section_372E = Section.create! current_enrollment: 61, location: 1,   term: 'Sp16', course: @course_372, cc_instructor_tag: "Something else"
+    @section_372 = Section.create! current_enrollment: 107, location: 0,   term: 'Sp16', course: @course_372, cc_instructor_tag: "Something else"
+    @section_381 = Section.create! current_enrollment: 106, location: 0,   term: 'Sp16', course: @course_381, cc_instructor_tag: "Something else"
+    @section_391E = Section.create! current_enrollment: 75, location: 1,   term: 'Sp16', course: @course_391, cc_instructor_tag: "Something else"
+    @section_391 = Section.create! current_enrollment: 127, location: 0,   term: 'Sp16', course: @course_391, cc_instructor_tag: "Something else"
+    @section_419E = Section.create! current_enrollment: 34, location: 1,   term: 'Sp16', course: @course_419, cc_instructor_tag: "Something else"
+    @section_419_553 = Section.create! current_enrollment: 46, location: 0,   term: 'Sp16', course: @course_419_553, cc_instructor_tag: "Something else"
+    @section_434 = Section.create! current_enrollment: 30, location: 0,   term: 'Sp16', course: @course_434, cc_instructor_tag: "Something else"
+    @section_444_544 = Section.create! current_enrollment: 115, location: 0,   term: 'Sp16', course: @course_444_544, cc_instructor_tag: "Something else"
+    @section_463 = Section.create! current_enrollment: 124, location: 0,   term: 'Sp16', course: @course_463, cc_instructor_tag: "Something else"
+    @section_472_572 = Section.create! current_enrollment: 149, location: 0,   term: 'Sp16', course: @course_472_572, cc_instructor_tag: "Something else"
+    @section_475_575 = Section.create! current_enrollment: 76, location: 0,   term: 'Sp16', course: @course_475_575, cc_instructor_tag: "Something else"
+    @section_496E = Section.create! current_enrollment: 53, location: 1,   term: 'Sp16', course: @course_496, cc_instructor_tag: "Something else"
+    @section_496 = Section.create! current_enrollment: 43, location: 0,   term: 'Sp16', course: @course_496, cc_instructor_tag: "Something else"
+    @section_516 = Section.create! current_enrollment: 13, location: 0,   term: 'Sp16', course: @course_516, cc_instructor_tag: "Something else"
+    @section_517 = Section.create! current_enrollment: 48, location: 0,   term: 'Sp16', course: @course_517, cc_instructor_tag: "Something else"
+    @section_519_599 = Section.create! current_enrollment: 9, location: 0,   term: 'Sp16', course: @course_519_599, cc_instructor_tag: "Something else"
+    @section_533 = Section.create! current_enrollment: 24, location: 0,   term: 'Sp16', course: @course_533, cc_instructor_tag: "Something else"
+    @section_421_521 = Section.create! current_enrollment: 53, location: 0,   term: 'Sp16', course: @course_421_521, cc_instructor_tag: "Something else"
   end
 
   def seed_students
-    @keeley_abbott = User.create! first_name: 'Keeley', last_name: 'Abbott', fte: 0.25, email: 'keeley_abbott@oregonstate.edu'
-    @caius_brindescu = User.create! first_name: 'Caius', last_name: 'Brindescu', fte: 0.49, email: 'caius_brindescu@oregonstate.edu'
-    @jonathan_dodge = User.create! first_name: 'Jonathan', last_name: 'Dodge', fte: 0.49, email: 'jonathan_dodge@oregonstate.edu'
-    @laxmi_ganesan = User.create! first_name: 'Laxmi', last_name: 'Ganesan', fte: 0.49, email: 'laxmi_ganesan@oregonstate.edu'
-    @mohammad_reza_ghaeini = User.create! first_name: 'Mohammad Reza', last_name: 'Ghaeini', fte: 0.49, email: 'mohammad_reza_ghaeini@oregonstate.edu'
-    @xinze_guan = User.create! first_name: 'Xinze', last_name: 'Guan', fte: 0.49, email: 'xinze_guan@oregonstate.edu'
-    @jun_he = User.create! first_name: 'Jun', last_name: 'He', fte: 0.49, email: 'jun_he@oregonstate.edu'
-    @zhangxiang_hu = User.create! first_name: 'Zhangxiang', last_name: 'Hu', fte: 0.25, email: 'zhangxiang_hu@oregonstate.edu'
-    @spencer_hubbard = User.create! first_name: 'Spencer', last_name: 'Hubbard', fte: 0.49, email: 'spencer_hubbard@oregonstate.edu'
-    @zahra_iman = User.create! first_name: 'Zahra', last_name: 'Iman', fte: 0.49, email: 'zahra_iman@oregonstate.edu'
-    @jeffrey_juozapaitis = User.create! first_name: 'Jeffrey', last_name: 'Juozapaitis', fte: 0.49, email: 'jeffrey_juozapaitis@oregonstate.edu'
-    @prashant_kumar = User.create! first_name: 'Prashant', last_name: 'Kumar', fte: 0.49, email: 'prashant_kumar@oregonstate.edu'
-    @xingyi_li = User.create! first_name: 'Xingyi', last_name: 'Li', fte: 0.49, email: 'xingyi_li@oregonstate.edu'
-    @xin_liu = User.create! first_name: 'Xin', last_name: 'Liu', fte: 0.25, email: 'xin_liu@oregonstate.edu'
-    @farhana_liza = User.create! first_name: 'Farhana', last_name: 'Liza', fte: 0.49, email: 'farhana_liza@oregonstate.edu'
-    @umme_mannan = User.create! first_name: 'Umme', last_name: 'Mannan', fte: 0.49, email: 'umme_mannan@oregonstate.edu'
-    @shane_mckee = User.create! first_name: 'Shane', last_name: 'Mc Kee', fte: 0.49, email: 'shane_mc_kee@oregonstate.edu'
-    @pranjal_mittal = User.create! first_name: 'Pranjal', last_name: 'Mittal', fte: 0.49, email: 'pranjal_mittal@oregonstate.edu'
-    @sean_moore = User.create! first_name: 'Sean', last_name: 'Moore', fte: 0.49, email: 'sean_moore@oregonstate.edu'
-    @rithika_naik = User.create! first_name: 'Rithika', last_name: 'Naik', fte: 0.49, email: 'rithika_naik@oregonstate.edu'
-    @rasha_obeidat = User.create! first_name: 'Rasha', last_name: 'Obeidat', fte: 0.49, email: 'rasha_obeidat@oregonstate.edu'
-    @nels_oscar = User.create! first_name: 'Nels', last_name: 'Oscar', fte: 0.49, email: 'nels_oscar@oregonstate.edu'
-    @arezoo_rajabi = User.create! first_name: 'Arezoo', last_name: 'Rajabi', fte: 0.49, email: 'arezoo_rajabi@oregonstate.edu'
-    @peter_rindal = User.create! first_name: 'Peter', last_name: 'Rindal', fte: 0.25, email: 'peter_rindal@oregonstate.edu'
-    @hamed_shahbazi = User.create! first_name: 'Hamed', last_name: 'Shahbazi', fte: 0.49, email: 'hamed_shahbazi@oregonstate.edu'
-    @ritesh_sharma = User.create! first_name: 'Ritesh', last_name: 'Sharma', fte: 0.25, email: 'ritesh_sharma@oregonstate.edu'
-    @nitin_subramanian = User.create! first_name: 'Nitin', last_name: 'Subramanian', fte: 0.49, email: 'nitin_subramanian@oregonstate.edu'
-    @xiangyu_wang = User.create! first_name: 'Xiangyu', last_name: 'Wang', fte: 0.25, email: 'xiangyu_wang@oregonstate.edu'
-    @keying_xu = User.create! first_name: 'Keying', last_name: 'Xu', fte: 0.25, email: 'keying_xu@oregonstate.edu'
-    @xu_xu = User.create! first_name: 'Xu', last_name: 'Xu', fte: 0.25, email: 'xu_xu@oregonstate.edu'
-    @fan_yang = User.create! first_name: 'Fan', last_name: 'Yang', fte: 0.25, email: 'fan_yang@oregonstate.edu'
-    @hongyan_yi = User.create! first_name: 'Hongyan', last_name: 'Yi', fte: 0.49, email: 'hongyan_yi@oregonstate.edu'
-    @tadesse_zemicheal = User.create! first_name: 'Tadesse', last_name: 'Zemicheal', fte: 0.49, email: 'tadesse_zemicheal@oregonstate.edu'
-    @baigong_zheng = User.create! first_name: 'Baigong', last_name: 'Zheng', fte: 0.25, email: 'baigong_zheng@oregonstate.edu'
-    @chao_peng = User.create! first_name: 'Chao', last_name: 'Peng', fte: 0.25, email: 'chao_peng@oregonstate.edu'
-    @sherif_abdelwahab = User.create! first_name: 'Sherif', last_name: 'Abdelwahab', fte: 0.49, email: 'sherif_abdelwahab@oregonstate.edu'
-    @sumanth_avadhani = User.create! first_name: 'Sumanth', last_name: 'Avadhani', fte: 0.49, email: 'sumanth_avadhani@oregonstate.edu'
-    @hui_zhang = User.create! first_name: 'Hui', last_name: 'Zhang', fte: 0.49, email: 'hui_zhang@oregonstate.edu'
-    @pingan_zhu = User.create! first_name: 'Pingan', last_name: 'Zhu', fte: 0.49, email: 'pingan_zhu@oregonstate.edu'
-    @wojtec_rajski = User.create! first_name: 'Wojtec', last_name: 'Rajski', fte: 0.49, email: 'wojtec_rajski@oregonstate.edu'
-    @padraic_mcgraw = User.create! first_name: 'Padraic', last_name: 'McGraw', fte: 0.49, email: 'padraic_mcgraw@oregonstate.edu'
-    @william_leslie = User.create! first_name: 'William', last_name: 'Leslie', fte: 0.49, email: 'william_leslie@oregonstate.edu'
-    @shankar_jothi = User.create! first_name: 'Shankar', last_name: 'Jothi', fte: 0.49, email: 'shankar_jothi@oregonstate.edu'
-    @gungor_basa = User.create! first_name: 'Gungor', last_name: 'Basa', fte: 0.25, email: 'gungor_basa@oregonstate.edu'
-    @eric_happe = User.create! first_name: 'Eric', last_name: 'Happe', fte: 0.49, email: 'eric_happe@oregonstate.edu'
-    @dileep_sreekumaran = User.create! first_name: 'Dileep', last_name: 'Sreekumaran', fte: 0.25, email: 'dileep_sreekumaran@oregonstate.edu'
-    @guochen_xu = User.create! first_name: 'Guochen', last_name: 'Xu', fte: 0.49, email: 'guochen_xu@oregonstate.edu'
-    @yao_zhou = User.create! first_name: 'Yao', last_name: 'Zhou', fte: 0.49, email: 'yao_zhou@oregonstate.edu'
-    @khalfi_bassem = User.create! first_name: 'Khalfi', last_name: 'Bassem', fte: 0.49, email: 'khalfi_bassem@oregonstate.edu'
-    @siddharth_mahendra = User.create! first_name: 'Siddharth', last_name: 'Mahendra', fte: 0.25, email: 'siddharth_mahendra@oregonstate.edu'
+    @keeley_abbott = User.create! first_name: 'Keeley', last_name: 'Abbott', fte: 0.25, email: 'keeley_abbott@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @caius_brindescu = User.create! first_name: 'Caius', last_name: 'Brindescu', fte: 0.49, email: 'caius_brindescu@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @jonathan_dodge = User.create! first_name: 'Jonathan', last_name: 'Dodge', fte: 0.49, email: 'jonathan_dodge@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @laxmi_ganesan = User.create! first_name: 'Laxmi', last_name: 'Ganesan', fte: 0.49, email: 'laxmi_ganesan@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @mohammad_reza_ghaeini = User.create! first_name: 'Mohammad Reza', last_name: 'Ghaeini', fte: 0.49, email: 'mohammad_reza_ghaeini@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @xinze_guan = User.create! first_name: 'Xinze', last_name: 'Guan', fte: 0.49, email: 'xinze_guan@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @jun_he = User.create! first_name: 'Jun', last_name: 'He', fte: 0.49, email: 'jun_he@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @zhangxiang_hu = User.create! first_name: 'Zhangxiang', last_name: 'Hu', fte: 0.25, email: 'zhangxiang_hu@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @spencer_hubbard = User.create! first_name: 'Spencer', last_name: 'Hubbard', fte: 0.49, email: 'spencer_hubbard@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @zahra_iman = User.create! first_name: 'Zahra', last_name: 'Iman', fte: 0.49, email: 'zahra_iman@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @jeffrey_juozapaitis = User.create! first_name: 'Jeffrey', last_name: 'Juozapaitis', fte: 0.49, email: 'jeffrey_juozapaitis@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @prashant_kumar = User.create! first_name: 'Prashant', last_name: 'Kumar', fte: 0.49, email: 'prashant_kumar@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @xingyi_li = User.create! first_name: 'Xingyi', last_name: 'Li', fte: 0.49, email: 'xingyi_li@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @xin_liu = User.create! first_name: 'Xin', last_name: 'Liu', fte: 0.25, email: 'xin_liu@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @farhana_liza = User.create! first_name: 'Farhana', last_name: 'Liza', fte: 0.49, email: 'farhana_liza@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @umme_mannan = User.create! first_name: 'Umme', last_name: 'Mannan', fte: 0.49, email: 'umme_mannan@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @shane_mckee = User.create! first_name: 'Shane', last_name: 'Mc Kee', fte: 0.49, email: 'shane_mc_kee@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @pranjal_mittal = User.create! first_name: 'Pranjal', last_name: 'Mittal', fte: 0.49, email: 'pranjal_mittal@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @sean_moore = User.create! first_name: 'Sean', last_name: 'Moore', fte: 0.49, email: 'sean_moore@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @rithika_naik = User.create! first_name: 'Rithika', last_name: 'Naik', fte: 0.49, email: 'rithika_naik@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @rasha_obeidat = User.create! first_name: 'Rasha', last_name: 'Obeidat', fte: 0.49, email: 'rasha_obeidat@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @nels_oscar = User.create! first_name: 'Nels', last_name: 'Oscar', fte: 0.49, email: 'nels_oscar@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @arezoo_rajabi = User.create! first_name: 'Arezoo', last_name: 'Rajabi', fte: 0.49, email: 'arezoo_rajabi@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @peter_rindal = User.create! first_name: 'Peter', last_name: 'Rindal', fte: 0.25, email: 'peter_rindal@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @hamed_shahbazi = User.create! first_name: 'Hamed', last_name: 'Shahbazi', fte: 0.49, email: 'hamed_shahbazi@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @ritesh_sharma = User.create! first_name: 'Ritesh', last_name: 'Sharma', fte: 0.25, email: 'ritesh_sharma@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @nitin_subramanian = User.create! first_name: 'Nitin', last_name: 'Subramanian', fte: 0.49, email: 'nitin_subramanian@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @xiangyu_wang = User.create! first_name: 'Xiangyu', last_name: 'Wang', fte: 0.25, email: 'xiangyu_wang@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @keying_xu = User.create! first_name: 'Keying', last_name: 'Xu', fte: 0.25, email: 'keying_xu@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @xu_xu = User.create! first_name: 'Xu', last_name: 'Xu', fte: 0.25, email: 'xu_xu@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @fan_yang = User.create! first_name: 'Fan', last_name: 'Yang', fte: 0.25, email: 'fan_yang@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @hongyan_yi = User.create! first_name: 'Hongyan', last_name: 'Yi', fte: 0.49, email: 'hongyan_yi@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @tadesse_zemicheal = User.create! first_name: 'Tadesse', last_name: 'Zemicheal', fte: 0.49, email: 'tadesse_zemicheal@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @baigong_zheng = User.create! first_name: 'Baigong', last_name: 'Zheng', fte: 0.25, email: 'baigong_zheng@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @chao_peng = User.create! first_name: 'Chao', last_name: 'Peng', fte: 0.25, email: 'chao_peng@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @sherif_abdelwahab = User.create! first_name: 'Sherif', last_name: 'Abdelwahab', fte: 0.49, email: 'sherif_abdelwahab@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @sumanth_avadhani = User.create! first_name: 'Sumanth', last_name: 'Avadhani', fte: 0.49, email: 'sumanth_avadhani@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @hui_zhang = User.create! first_name: 'Hui', last_name: 'Zhang', fte: 0.49, email: 'hui_zhang@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @pingan_zhu = User.create! first_name: 'Pingan', last_name: 'Zhu', fte: 0.49, email: 'pingan_zhu@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @wojtec_rajski = User.create! first_name: 'Wojtec', last_name: 'Rajski', fte: 0.49, email: 'wojtec_rajski@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @padraic_mcgraw = User.create! first_name: 'Padraic', last_name: 'McGraw', fte: 0.49, email: 'padraic_mcgraw@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @william_leslie = User.create! first_name: 'William', last_name: 'Leslie', fte: 0.49, email: 'william_leslie@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @shankar_jothi = User.create! first_name: 'Shankar', last_name: 'Jothi', fte: 0.49, email: 'shankar_jothi@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @gungor_basa = User.create! first_name: 'Gungor', last_name: 'Basa', fte: 0.25, email: 'gungor_basa@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @eric_happe = User.create! first_name: 'Eric', last_name: 'Happe', fte: 0.49, email: 'eric_happe@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @dileep_sreekumaran = User.create! first_name: 'Dileep', last_name: 'Sreekumaran', fte: 0.25, email: 'dileep_sreekumaran@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @guochen_xu = User.create! first_name: 'Guochen', last_name: 'Xu', fte: 0.49, email: 'guochen_xu@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @yao_zhou = User.create! first_name: 'Yao', last_name: 'Zhou', fte: 0.49, email: 'yao_zhou@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @khalfi_bassem = User.create! first_name: 'Khalfi', last_name: 'Bassem', fte: 0.49, email: 'khalfi_bassem@oregonstate.edu', cc_instructor_tag: 'N/A'
+    @siddharth_mahendra = User.create! first_name: 'Siddharth', last_name: 'Mahendra', fte: 0.25, email: 'siddharth_mahendra@oregonstate.edu', cc_instructor_tag: 'N/A'
   end
 
   def seed_section_preferences

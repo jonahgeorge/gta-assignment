@@ -13,7 +13,7 @@
 <br>
 
 <div class="table-responsive">
-  <table class="table table-sm table-striped">
+  <table class="table table-sm table-striped table-bordered">
     <tr>
       <td></td>
       <% @sections.each do |section| %>
@@ -28,20 +28,12 @@
     <% @students.each do |student| %>
       <tr>
         <td>
-          <span style="white-space: nowrap;"><%= student.full_name %></span>
+          <span style="white-space: nowrap;"><%= "#{student.full_name} (#{student.fte})" %></span>
         </td>
         <% @sections.each do |section| %>
           <td>
-            <% if @pairs["#{student.id}_#{section.id}"] == "Yes" %>
-              Yes
-            <% end %>
-
-            <% if @pairs["#{student.id}_#{section.id}"] == "Maybe" %>
-              Maybe
-            <% end %>
-
-            <% if @pairs["#{student.id}_#{section.id}"] == "No" %>
-              No
+            <% if @assignments_fte["#{student.id}_#{section.id}"] > 0 %>
+              <b><%= @assignments_fte["#{student.id}_#{section.id}"] %></b>
             <% end %>
           </td>
         <% end %>
