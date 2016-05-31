@@ -6,8 +6,8 @@ wb.add_worksheet(name: "Assignments") do |sheet|
   }
 
   @students.each do |student|
-    sheet.add_row [ student.full_name ] + @sections.map { |section|
-      @pairs["#{student.id}_#{section.id}"]
+    sheet.add_row [ "#{student.full_name} (#{student.fte})" ] + @sections.map { |section|
+      @assignments_fte["#{student.id}_#{section.id}"]
     }
   end
 end

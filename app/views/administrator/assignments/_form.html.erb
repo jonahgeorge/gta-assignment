@@ -22,31 +22,23 @@
       <% @students.each do |student| %>
         <tr>
           <td>
-            <span style="white-space: nowrap;"><%= student.full_name %></span>
+            <span style="white-space: nowrap;"><%= "#{student.full_name} (#{student.fte})" %></span>
           </td>
           <% @sections.each do |section| %>
             <td>
-              <select name="assignments[<%= student.id %>_<%= section.id %>]">
-                <option></option>
-
-                <% if @pairs["#{student.id}_#{section.id}"] == "Yes" %>
-                  <option value="Yes" selected>Yes</option>
-                <% else %>
-                  <option value="Yes">Yes</option>
-                <% end %>
-
-                <% if @pairs["#{student.id}_#{section.id}"] == "Maybe" %>
-                  <option value="Maybe" selected>Maybe</option>
-                <% else %>
-                  <option value="Maybe">Maybe</option>
-                <% end %>
-
-                <% if @pairs["#{student.id}_#{section.id}"] == "No" %>
-                  <option value="No" selected>No</option>
-                <% else %>
-                  <option value="No">No</option>
-                <% end %>
-              </select>
+              <input
+                type="number"
+                name="assignments_fte[<%= student.id %>_<%= section.id %>]"
+                value="<%= @assignments_fte["#{student.id}_#{section.id}"] %>"
+              />
+              <label>
+                <input
+                  type="checkbox"
+                  name="assignments_is_fixed[<%= student.id %>_<%= section.id %>]"
+                  value="true"
+                  <%= "checked" if @assignments_is_fixed["#{student.id}_#{section.id}"] %>
+                /> Fixed
+              </label>
             </td>
           <% end %>
         </tr>
