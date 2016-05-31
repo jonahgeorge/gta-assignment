@@ -54,7 +54,7 @@ module Administrator
 
       # Only allow a trusted parameter "white list" through.
       def user_params
-        params[:user].permit(:is_administrator, :fte)
+        params[:user].permit(:first_name, :last_name, :email, :cc_instructor_tag, :is_administrator, :fte)
       end
   end
 end
