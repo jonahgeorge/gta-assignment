@@ -1,0 +1,8 @@
+<% @students.each do |student| %>
+  <%= "#{student.full_name} (#{student.fte})" %>
+  <% @sections.each do |section| %>
+    <% if @assignments_fte["#{student.id}_#{section.id}"] > 0 %>
+      <%= "\t #{section.course.label}-#{section.section}" %> (<%= @assignments_fte["#{student.id}_#{section.id}"] %>)
+    <% end %>
+  <% end %>
+<% end %>

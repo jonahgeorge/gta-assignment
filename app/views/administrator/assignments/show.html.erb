@@ -1,0 +1,44 @@
+<%= link_to "&larr; Back to Assignments".html_safe, administrator_assignments_path %>
+
+<h2>Assignment #<%= @assignment.id %></h2>
+
+<%= link_to "Edit", edit_administrator_assignment_path(@assignment),
+  class: "btn btn-default btn-warning" %>
+<%= link_to "Export to Plaintext", administrator_assignment_path(@assignment, format: "txt"),
+  class: "btn btn-default btn-success" %>
+<%= link_to "Export to Excel", administrator_assignment_path(@assignment, format: "xlsx"),
+  class: "btn btn-default btn-success" %>
+
+<br>
+<br>
+
+<div class="table-responsive">
+  <table class="table table-sm table-striped table-bordered">
+    <tr>
+      <td></td>
+      <% @sections.each do |section| %>
+      <td>
+        <span style="white-space: nowrap;"><%= section.course.label %>-<%= section.section %></span><br>
+        <span style="white-space: nowrap;"><%= section.cc_instructor_tag %></span><br>
+        <span style="white-space: nowrap;"><%= section.current_enrollment %> / <%= section.max_enrollment %></span>
+      </td>
+      <% end %>
+    </tr>
+
+    <% @students.each do |student| %>
+      <tr>
+        <td>
+          <span style="white-space: nowrap;"><%= "#{student.full_name} (#{student.fte})" %></span>
+        </td>
+        <% @sections.each do |section| %>
+          <td>
+            <% if @assignments_fte["#{student.id}_#{section.id}"].to_f > 0 %>
+              <b><%= @assignments_fte["#{student.id}_#{section.id}"] %></b>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+
+  </table>
+</div>

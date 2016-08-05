@@ -1,0 +1,52 @@
+<%= form_for [:administrator, @assignment] do |f| %>
+
+  <%= f.submit "Run solver", class: "btn btn-warning" %>
+  <%= f.submit "Save", class: "btn btn-success" %>
+
+  <br>
+  <br>
+
+  <div class="table-responsive">
+    <table class="table table-sm table-striped">
+      <tr>
+        <td></td>
+        <% @sections.each do |section| %>
+          <td>
+            <span style="white-space: nowrap;"><%= section.course.label %>-<%= section.section %></span><br>
+            <span style="white-space: nowrap;"><%= section.cc_instructor_tag %></span><br>
+            <span style="white-space: nowrap;"><%= section.current_enrollment %> / <%= section.max_enrollment %></span>
+          </td>
+        <% end %>
+      </tr>
+
+      <% @students.each do |student| %>
+        <tr>
+          <td>
+            <span style="white-space: nowrap;"><%= "#{student.full_name} (#{student.fte})" %></span>
+          </td>
+          <% @sections.each do |section| %>
+            <td>
+              <input
+                type="number"
+                name="assignments_fte[<%= student.id %>_<%= section.id %>]"
+                value="<%= @assignments_fte["#{student.id}_#{section.id}"] || 0.0 %>"
+                step=0.01
+                min=0.0
+                max=0.50
+              />
+              <label>
+                <input
+                  type="checkbox"
+                  name="assignments_is_fixed[<%= student.id %>_<%= section.id %>]"
+                  value="true"
+                  <%= "checked" if @assignments_is_fixed["#{student.id}_#{section.id}"] %>
+                /> Fixed
+              </label>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+
+    </table>
+  </div>
+<% end %>

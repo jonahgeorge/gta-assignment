@@ -14,23 +14,42 @@
   <% end %>
 
   <div class="form-group">
+    <label>First Name</label>
+    <%= f.text_field :first_name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label>Last Name</label>
+    <%= f.text_field :last_name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label>Email</label>
+    <%= f.email_field :email, class: "form-control" %>
+    <span class="help-block">This email <strong>must</strong> be of the form <code>@oregonstate.edu</code> and match this user's ONID username. Failure to follow this convention will result in data synchronization errors.</span>
+  </div>
+
+  <div class="form-group">
+    <label>CcInstructorTag</label>
+    <%= f.text_field :cc_instructor_tag, class: "form-control" %>
+    <span class="help-block">This field <strong>must</strong> be of the form <code>[Last Name], [First Initial].</code>. Failure to follow this convention will result in data synchronization errors.</span>
+  </div>
+
+  <div class="form-group">
     <div class="checkbox">
       <label>
-        <%= f.check_box :is_administrator %> Is Administrator
+        <%= f.check_box :is_administrator %> User Is An Administrator
       </label>
     </div>
   </div>
 
-
   <div class="form-group">
     <%= f.label :fte %>
-    <%= f.number_field :fte, step: 0.01, min: 0, max: 0.50 %>
+    <%= f.number_field :fte, step: 0.01, min: 0, max: 0.50, class: "form-control" %>
   </div>
 
   <div class="actions">
     <%= f.submit nil, class: "btn btn-default" %>
-
-    <%= link_to 'Back', administrator_user_path(@user), class: "btn btn-default" %>
 
     <% unless @user.new_record? %>
       <%= link_to "Delete", administrator_user_path(@user), method: :delete,
