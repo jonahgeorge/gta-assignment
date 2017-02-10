@@ -1,0 +1,151 @@
+\subsection{Interesting Code}
+
+Of all the interesting code in this project, there are two pieces that stand out.
+Particularly, the backgrounds job associated with syncing the applications data with the data in the OSU Course Catalog and the code used to model the integer linear program.
+First focusing on the background job code, we are using the ActiveJob interface from Ruby on Rails to define a background job that is run by the DelayedJob adapter.
+This implements a queue using a table in Postgres through which a secondary "worker" process will pop jobs off and execute them.
+The code included below is the "CourseSyncJob", the second of three background job.
+It takes all of the departments declared on the OSU Course Catalog and scrapes it to find each of the department's courses.
+These courses are compared to the ones already saved in the database.
+If a new course is detected, an object is constructed and saved.
+If not, the existing object is updated with any new values that came from the Course Catalog.
+
+\begin{lstlisting}
+class CoursesSyncJob < ActiveJob::Base
+  queue_as :default
+
+  def perform(department_id, cc_department_json)
+    cc_department = OsuCcScraper::Department.from_json(cc_department_json)
+
+    cc_courses(cc_department).each do |cc_course|
+      course = Course.find_or_create_by(
+        department_id: department_id, course_number: cc_course.course_number)
+      course.update_attributes(name: cc_course.name)
+      course.save
+
+      SectionsSyncJob.perform_later(course.id, cc_course.to_json)
+    end
+  end
+
+  private
+
+    def cc_courses(cc_department)
+      cc_department.courses.select { |c|
+        course_whitelist.include?("#{cc_department.subject_code} #{c.course_number}")
+      }
+    end
+
+    def course_whitelist
+      ["CS 225", "CS 261", "CS 261", "CS 271", "CS 290"]
+    end
+end
+\end{lstlisting}
+
+The second piece of interesting code is a class called \textit{IntegerLinearProgram}.
+This class encapsulates all of the logic necessary to model the ILP.
+It uses a third-party library called "rulp" to handle the actual Ruby domain-specific language (DSL) to linear-program (LP) modelling language conversion.
+In this case, the class constructor takes two ActiveRecord (Ruby on Rails ORM) relations, "students" and "sections" and will query for additional data off of them.
+Using this method, we can pass a subset of the students and sections in the system into the IntegerLinearProgram class and treat it as a "blackbox" solution as it will fetch whatever other data it requires.
+After constructing all of the constraints in the class constructor, the programmer can call "solve" on the object which serializes the linear program to a string which is passed into the COIN-OR CBC solver.
+The results is passed back to Ruby where it is re-serialized into Ruby objects that we can use in other parts of the system.
+
+Because of the size of this class, it has been shortened to show the structure and we'll descend into a few particularly interesting methods. The structure of \textit{IntegerLinearProgram} is as follows:
+
+\begin{lstlisting}
+class IntegerLinearProgram
+
+  def initialize(students, sections, fixed_assignments = {}, fte_per_section = 0.25, students_per_ta = 30)
+    @students = students
+    @sections = sections
+    @fixed_assignments = fixed_assignments
+    @fte_per_section = fte_per_section
+    @students_per_ta = students_per_ta
+
+    @problem = Rulp::Max(objective)
+    enrollment_contraint
+    fte_contraint
+    skill_contraint
+    fixed_assignments_constraint if @fixed_assignments
+  end
+
+  def solve; end
+  def results; end
+  def print_results; end
+
+private
+
+  def objective; end
+  def enrollment_contraint; end
+  def fte_contraint; end
+  def skill_contraint; end
+  def fixed_assignments_constraint; end
+
+end
+\end{lstlisting}
+
+The first interesting method is the \textit{objective} method.
+This method is responsible for modelling the objective function of the linear program.
+It starts by iterating all of the sections to build a hashmap of the instructor's preferences of students.
+The keys of this hash are a combination of the student's id and the section's id.
+
+Next, it starts iterating student-by-student building the linear program variables.
+First, it builds a similar hashmap structure for student preference's of sections.
+Then starts iterating section-by-section retrieving the student's preference of the section and the instructor's preference of the student for said section.
+If either of these values does not exist, it substitutes a value of \textit{1}.
+Finally, it builds an array of these LP variables in the \textit{variables} variable.
+At the end, \textit{variables} is summed and returned.
+
+\begin{lstlisting}
+def objective
+  variables = []
+
+  instructor_student_preferences = {}
+  @sections.each do |section|
+    if section.instructor
+      section.instructor.student_preferences.each do |preference|
+        instructor_student_preferences[:"#{preference.student.id}_#{section.id}"] = preference
+      end
+    end
+  end
+
+  @students.each do |student|
+    section_preferences =
+      student.section_preferences.index_by { |preference| :"#{student.id}_#{preference.section.id}" }
+
+    @sections.each do |section|
+      student_score = section_preferences[:"#{student.id}_#{section.id}"].try(:value_raw)
+      student_score ||= 1
+
+      instructor_score = instructor_student_preferences[:"#{student.id}_#{section.id}"].try(:value_raw)
+      instructor_score ||= 1
+
+      variables << (student_score * instructor_score * VAR_b(student.id, section.id))
+    end
+  end
+  variables.sum
+end
+\end{lstlisting}
+
+The second piece of interesting code is the \textit{skill\_constraint} method.
+This is one of the four constraints that are programmed into our linear program.
+This one in particular is responsible for preventing teaching assistants from being assigned to classes that they are not qualified to TA.
+Similar to the objective function, it starts iterating student-by-student and building a hashmap of experience records.
+Then, it iterates by sections and the requirements for each section to determine which constraints need to be added.
+If a section has a particular requirement and the student does not fulfill that requirement, a "hard" constraint settings the value to zero is added to the linear program.
+
+\begin{lstlisting}
+def skill_contraint
+  @students.each do |student|
+    experiences = student.experiences.index_by { |experience| :"#{experience.skill_id}" }
+
+    @sections.each do |section|
+      section.course.requirements.each do |requirement|
+        exp = experiences[:"#{requirement.skill_id}"]
+        if exp == nil || exp[:value] < requirement[:value]
+          @problem[ VAR_b(student.id, section.id) <= 0 ] # Hardcode to NO
+        end
+      end
+    end
+  end
+end
+\end{lstlisting}

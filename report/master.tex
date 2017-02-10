@@ -1,0 +1,55 @@
+\documentclass[10pt,draftclsnofoot,onecolumn]{IEEEtran}
+
+\usepackage{listings}
+\usepackage{graphicx}
+
+\graphicspath{ {images/} }
+\title{Group 07, GTA Corvallis Final Report}
+\author{Jonah George, Kris Vand Zandt, and Ryan Graysmark}
+\date{March 2016}
+
+\lstset{ %
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  frame=single,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  language=Ruby,                 % the language of the code
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+}
+
+\begin{document}
+
+\maketitle
+
+\hfill \break \hfill \break \hfill \break
+\hfill \break \hfill \break \hfill \break
+\hfill \break \hfill \break \hfill \break
+\hfill \break \hfill \break \hfill \break
+
+\begin{abstract}
+The GTA Corvallis project has almost completed all of our system requirements that we set in the Fall of 2015.
+Admins are now able to run the ILP which uses the constraints that we have defined to select the best student to the right class.
+With some last minute changes before expo, the project will be fully completed.
+\end{abstract}
+
+\pagenumbering{gobble}% Turn off page numbering.
+\newpage
+\pagenumbering{arabic}% Turn page numbering back on.
+
+\section{Introduction}
+
+\input{subsections/problem_statement}
+\input{subsections/proposed_solution}
+
+\section{Current Progress}
+
+\input{subsections/home_page}
+\input{subsections/student}
+\input{subsections/instructor}
+\input{subsections/administrator}
+\input{subsections/interesting_code}
+\input{subsections/future_work}
+
+\end{document}
